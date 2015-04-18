@@ -36,7 +36,17 @@ public class Game {
 	private Random colorRandomizer = new Random();
 	private StringBuilder playerPattern = new StringBuilder();
 	private boolean patternClickEnabled = false;
-	private Timer timer = new Timer();
+	/**
+	 * Maximum allowed time for current level
+	 */
+	private long timeinMillSec;
+	/**
+	 * Holds the maximum points possible for the level Any user, practically,
+	 * will not be able to score maximum
+	 */
+	private long points;
+	private Timer timer;
+
 	public Game(Activity activity) {
 		super();
 		this.activity = activity;
@@ -60,6 +70,8 @@ public class Game {
 					Game.this.ordering = level.getString(getString(R.string.parse_field_level_ordering));
 					Game.this.noOfComponents = level.getInt(getString(R.string.parse_field_level_noOfComp));
 					Game.this.defaultSpeed = level.getInt(getString(R.string.parse_field_level_speed));
+					Game.this.timeinMillSec = level.getInt(getString(R.string.parse_field_level_time)) * 1000;
+					Game.this.points = level.getInt(getString(R.string.parse_field_level_points));
 					postInit();
 				} else {
 					Log.d(MemoryGame.LOGGING_KEY, "query level dint work", e);
@@ -72,6 +84,7 @@ public class Game {
 	 * Wrapper for all work that needs to be done post initialization
 	 */
 	public void postInit() {
+		timer = new Timer(activity, timeinMillSec);
 		draw();
 	}
 
@@ -95,12 +108,12 @@ public class Game {
 					return;
 				}
 				boolean resume = recordPattern(position);
-				if(!resume){
+				if (!resume) {
 					timer.endTimer();
-					if(playerPattern.toString().equals(ordering)){
-						//you are good. got to next level
+					if (playerPattern.toString().equals(ordering)) {
+						// you are good. got to next level
 						gotoNextLevel();
-					}else{
+					} else {
 						restartLevel();
 					}
 				}
@@ -237,9 +250,10 @@ public class Game {
 		int currentLevel = getLevelNo();
 		int currentScore = getScore();
 		user.put(getString(R.string.parse_field_user_level), currentLevel + 1);
-		user.put(getString(R.string.parse_field_user_score), currentScore + Score.calcScore(getLevelNo(), timer.getTime()));
+		user.put(getString(R.string.parse_field_user_score),
+				currentScore + Score.calcScore( timer.getTime(), this.timeinMillSec, this.points));
 		user.saveInBackground(new SaveCallback() {
-			
+
 			@Override
 			public void done(ParseException arg0) {
 				((Button) activity.findViewById(R.id.buttonPlay)).setVisibility(View.GONE);
@@ -247,7 +261,7 @@ public class Game {
 			}
 		});
 		Toast.makeText(activity, "yo are good", Toast.LENGTH_SHORT).show();
-		
+
 	}
 
 	private void restartLevel() {
@@ -256,5 +270,4 @@ public class Game {
 		btn.setText(getString(R.string.btn_txt_retry));
 		btn.setVisibility(View.VISIBLE);
 	}
-
 }

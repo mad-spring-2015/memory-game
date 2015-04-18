@@ -1,7 +1,7 @@
 package edu.uncc.mad.memorygame;
 
 public class Score {
-	public static int calcScore(int level, double time){
-		return 1;
+	public static long calcScore(long timeTaken, long maxTime, long maxScore){
+		return maxScore - (timeTaken/1000);
 	}
 }

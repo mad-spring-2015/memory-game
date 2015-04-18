@@ -10,6 +10,8 @@
     <string name="parse_field_level_noOfComp">noOfComponents</string>
     <string name="parse_field_level_ordering">ordering</string>
     <string name="parse_field_level_speed">speed</string>
+    <string name="parse_field_level_time">time</string>
+    <string name="parse_field_level_points">points</string>
     <string name="parse_field_user_score">score</string>
     <string name="parse_field_user_level">level</string>
 

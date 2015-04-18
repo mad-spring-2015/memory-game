@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="@dimen/activity_margin"
-    android:gravity="center"
+    android:gravity="center_horizontal"
     tools:context="edu.uncc.mad.memorygame.MemoryGame" >
 
     <RelativeLayout
@@ -51,27 +51,26 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/gridViewGame"
         android:layout_centerHorizontal="true"
-        android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:visibility="gone" />
+        android:visibility="invisible" />
 
     <Button
         android:id="@+id/buttonPlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/gridViewGame"
+        android:layout_below="@id/textViewTimeRem"
         android:layout_centerHorizontal="true"
-        android:text="@string/play_btn_text"
-        android:onClick="playBtnClicked" />
+        android:onClick="playBtnClicked"
+        android:text="@string/play_btn_text" />
 
     <Button
         android:id="@+id/buttonRestart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/gridViewGame"
+        android:layout_below="@id/textViewTimeRem"
         android:layout_centerHorizontal="true"
+        android:onClick="restartBtnClicked"
         android:text="@string/btn_txt_nxt_level"
-        android:visibility="gone" 
-        android:onClick="restartBtnClicked"/>
+        android:visibility="gone" />
 
 </RelativeLayout>
