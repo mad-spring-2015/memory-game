@@ -4,5 +4,12 @@
     <string name="app_name">Memory Game</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
+    <string name="logout">Logout</string>
+    <string name="parse_class_level">Level</string>
+    <string name="parse_field_level_levelno">levelno</string>
+    <string name="parse_field_level_noOfComp">noOfComponents</string>
+    <string name="parse_field_level_ordering">ordering</string>
+    <string name="parse_field_level_speed">speed</string>
+    <string name="parse_field_user_score">score</string>
+    <string name="parse_field_user_level">level</string>
 </resources>
