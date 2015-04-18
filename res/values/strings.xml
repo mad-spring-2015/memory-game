@@ -23,4 +23,7 @@
         <item>778899</item>
         <item>FFA500</item>
     </string-array>
+        <string name="play_btn_text">Lets Play!</string>
+        <string name="btn_txt_nxt_level">Next Level</string>
+        <string name="btn_txt_retry">Retry</string>
 </resources>

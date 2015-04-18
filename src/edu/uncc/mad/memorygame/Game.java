@@ -4,11 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,8 +23,10 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class Game {
+	private static final String ORDERING_DELIMITER = ",";
 	private String ordering;
 	private int noOfComponents;
 	private int defaultSpeed;
@@ -27,7 +34,9 @@ public class Game {
 	private List<Circle> components = new ArrayList<Circle>();
 	private String[] availableColors;
 	private Random colorRandomizer = new Random();
-
+	private StringBuilder playerPattern = new StringBuilder();
+	private boolean patternClickEnabled = false;
+	private Timer timer = new Timer();
 	public Game(Activity activity) {
 		super();
 		this.activity = activity;
@@ -59,10 +68,16 @@ public class Game {
 		});
 	}
 
+	/**
+	 * Wrapper for all work that needs to be done post initialization
+	 */
 	public void postInit() {
 		draw();
 	}
 
+	/**
+	 * Draws the game screen based on level
+	 */
 	public void draw() {
 		((TextView) activity.findViewById(R.id.textViewLevel)).setText("Level : " + getLevelNo());
 		((TextView) activity.findViewById(R.id.textViewScore)).setText("Score : " + getScore());
@@ -76,36 +91,58 @@ public class Game {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Toast.makeText(activity, ((Circle)view).getColor() + "", Toast.LENGTH_SHORT).show();
+				if (!patternClickEnabled) {
+					return;
+				}
+				boolean resume = recordPattern(position);
+				if(!resume){
+					timer.endTimer();
+					if(playerPattern.toString().equals(ordering)){
+						//you are good. got to next level
+						gotoNextLevel();
+					}else{
+						restartLevel();
+					}
+				}
 			}
 		});
 	}
 
-	private int getRandomColor(){
+	private int getRandomColor() {
 		int idx = this.colorRandomizer.nextInt(availableColors.length);
 		String randomColor = availableColors[idx];
 		int color, red, green, blue;
 		color = (int) Long.parseLong(randomColor, 16);
-		red = (color >> 16 ) & 0xFF;
+		red = (color >> 16) & 0xFF;
 		green = (color >> 8) & 0xFF;
 		blue = (color >> 0) & 0xFF;
 		return Color.rgb(red, green, blue);
+	}
+
+	/**
+	 * Record the player pattern one click at a time
+	 * 
+	 * @param position
+	 * @return whether to continue recording or not
+	 */
+	private boolean recordPattern(int position) {
+		playerPattern.append((playerPattern.length() == 0) ? (position + "") : (ORDERING_DELIMITER + position));
+		if (playerPattern.length() >= this.ordering.length()) {
+			return false;
+		}
+		return true;
 	}
 
 	public void showScore() {
 
 	}
 
-	public void startTimer() {
-
-	}
-
 	public void enableClicks() {
-
+		this.patternClickEnabled = true;
 	}
 
 	public void disableClicks() {
-
+		this.patternClickEnabled = false;
 	}
 
 	public void saveScore() {
@@ -113,7 +150,42 @@ public class Game {
 	}
 
 	public void playPattern() {
+		AnimatorSet animatorSet = new AnimatorSet();
+		animatorSet.addListener(new AnimatorListener() {
 
+			@Override
+			public void onAnimationStart(Animator animation) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onAnimationRepeat(Animator animation) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				enableClicks();
+				timer.startTimer();
+			}
+
+			@Override
+			public void onAnimationCancel(Animator animation) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+		List<Animator> animators = new ArrayList<Animator>();
+		for (String sIdx : ordering.split(ORDERING_DELIMITER)) {
+			int idx = Integer.valueOf(sIdx);
+			Animator animator = ObjectAnimator.ofFloat(components.get(idx), "alpha", 0.2f, 1f);
+			animator.setDuration(defaultSpeed);
+			animators.add(animator);
+		}
+		animatorSet.playSequentially(animators);
+		animatorSet.start();
 	}
 
 	private String getString(int resId) {
@@ -150,6 +222,39 @@ public class Game {
 
 	public void setDefaultSpeed(int defaultSpeed) {
 		this.defaultSpeed = defaultSpeed;
+	}
+
+	/**
+	 * Starts the game with the animations
+	 */
+	public void begin() {
+		activity.findViewById(R.id.buttonPlay).setEnabled(false);
+		playPattern();
+	}
+
+	private void gotoNextLevel() {
+		ParseUser user = ParseUser.getCurrentUser();
+		int currentLevel = getLevelNo();
+		int currentScore = getScore();
+		user.put(getString(R.string.parse_field_user_level), currentLevel + 1);
+		user.put(getString(R.string.parse_field_user_score), currentScore + Score.calcScore(getLevelNo(), timer.getTime()));
+		user.saveInBackground(new SaveCallback() {
+			
+			@Override
+			public void done(ParseException arg0) {
+				((Button) activity.findViewById(R.id.buttonPlay)).setVisibility(View.GONE);
+				((Button) activity.findViewById(R.id.buttonRestart)).setVisibility(View.VISIBLE);
+			}
+		});
+		Toast.makeText(activity, "yo are good", Toast.LENGTH_SHORT).show();
+		
+	}
+
+	private void restartLevel() {
+		((Button) activity.findViewById(R.id.buttonPlay)).setVisibility(View.GONE);
+		Button btn = (Button) activity.findViewById(R.id.buttonRestart);
+		btn.setText(getString(R.string.btn_txt_retry));
+		btn.setVisibility(View.VISIBLE);
 	}
 
 }

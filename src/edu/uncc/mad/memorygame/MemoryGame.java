@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.parse.LogInCallback;
@@ -20,8 +22,6 @@ public class MemoryGame extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_memory_game);
-		String pattern = "r,g,y,g,r,y";
-		float defaultTiming = 1000;
 		if (ParseUser.getCurrentUser() == null) {
 			logUserIn("avijaya2@uncc.edu", "123");
 		} else {
@@ -65,5 +65,15 @@ public class MemoryGame extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	public void playBtnClicked(View view){
+		game.begin();
+	}
+	public void restartBtnClicked(View view){
+		if(((Button)view).getText().equals(getString(R.string.btn_txt_nxt_level))){
+			recreate();
+		}else{
+			recreate();
+		}
 	}
 }
