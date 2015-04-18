@@ -4,10 +4,8 @@ import java.util.List;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
