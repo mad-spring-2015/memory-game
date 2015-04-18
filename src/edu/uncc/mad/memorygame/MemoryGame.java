@@ -14,6 +14,7 @@ import com.parse.ParseUser;
 public class MemoryGame extends Activity {
 
 	public static final String LOGGING_KEY = "app";
+	private Game game;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +24,9 @@ public class MemoryGame extends Activity {
 		float defaultTiming = 1000;
 		if (ParseUser.getCurrentUser() == null) {
 			logUserIn("avijaya2@uncc.edu", "123");
+		} else {
+			game = new Game(this);
+			game.init();
 		}
 	}
 
@@ -31,6 +35,8 @@ public class MemoryGame extends Activity {
 			public void done(ParseUser user, ParseException e) {
 				if (user != null) {
 					Log.d(MemoryGame.LOGGING_KEY, "User logged in");
+					game = new Game(MemoryGame.this);
+					game.init();
 				} else {
 					Log.d(MemoryGame.LOGGING_KEY, "User couldnt b logged in");
 					if (e.getCode() == ParseException.OBJECT_NOT_FOUND) {

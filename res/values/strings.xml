@@ -12,4 +12,15 @@
     <string name="parse_field_level_speed">speed</string>
     <string name="parse_field_user_score">score</string>
     <string name="parse_field_user_level">level</string>
+
+    <string-array name="availableColors">
+        <item>800080</item>
+        <item>3CB371</item>
+        <item>BC8F8F</item>
+        <item>D2B48C</item>
+        <item>B8860B</item>
+        <item>6495ED</item>
+        <item>778899</item>
+        <item>FFA500</item>
+    </string-array>
 </resources>

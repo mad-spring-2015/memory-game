@@ -2,18 +2,15 @@ package edu.uncc.mad.memorygame;
 
 import java.util.List;
 
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 public class CircleAdapter extends BaseAdapter {
-	private Context context;
 	private List<Circle> circles;
 
-	public CircleAdapter(Context context, List<Circle> circles) {
+	public CircleAdapter(List<Circle> circles) {
 		super();
-		this.context = context;
 		this.circles = circles;
 	}
 

@@ -11,6 +11,14 @@ public class Circle extends View {
 	private ShapeDrawable drawable;
 	private int color;
 	private int radius;
+	private static final int default_radius = 50;
+
+	public Circle(Context context, int color) {
+		super(context);
+		this.color = color;
+		this.radius = default_radius;
+		initCircle();
+	}
 
 	public Circle(Context context, int color, int radius) {
 		super(context);
