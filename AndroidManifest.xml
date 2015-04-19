@@ -26,6 +26,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".LeaderboardActivity"
+            android:label="@string/title_activity_leaderboard" >
+        </activity>
+        <activity
+            android:name=".StandingsActivity"
+            android:label="@string/title_activity_standings" >
+        </activity>
     </application>
 
 </manifest>

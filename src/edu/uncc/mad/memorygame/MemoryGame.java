@@ -1,6 +1,7 @@
 package edu.uncc.mad.memorygame;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -57,10 +58,21 @@ public class MemoryGame extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
-		if (id == R.id.logout) {
+		switch (id) {
+		case R.id.menu_item_logout:
 			ParseUser.logOut();
 			recreate();
 			return true;
+		case R.id.menu_item_leaderboard:
+			Intent leaderboardIntent = new Intent(this, LeaderboardActivity.class);
+			startActivity(leaderboardIntent);
+			break;
+		case R.id.menu_item_standing:
+			Intent standingsIntent = new Intent(this, StandingsActivity.class);
+			startActivity(standingsIntent);
+			break;
+		default:
+			break;
 		}
 		return super.onOptionsItemSelected(item);
 	}

@@ -4,7 +4,7 @@
     <string name="app_name">Memory Game</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="logout">Logout</string>
+    <string name="menu_item_logout_txt">Logout</string>
     <string name="parse_class_level">Level</string>
     <string name="parse_field_level_levelno">levelno</string>
     <string name="parse_field_level_noOfComp">noOfComponents</string>
@@ -25,7 +25,13 @@
         <item>778899</item>
         <item>FFA500</item>
     </string-array>
-        <string name="play_btn_text">Lets Play!</string>
-        <string name="btn_txt_nxt_level">Next Level</string>
-        <string name="btn_txt_retry">Retry</string>
+
+    <string name="play_btn_text">Lets Play!</string>
+    <string name="btn_txt_nxt_level">Next Level</string>
+    <string name="btn_txt_retry">Retry</string>
+    <string name="menu_item_leaderboard_txt">Leaderboard</string>
+    <string name="menu_item_standing_txt">Standing</string>
+    <string name="title_activity_leaderboard">Leaderboard</string>
+    <string name="title_activity_standings">Standings</string>
+
 </resources>
