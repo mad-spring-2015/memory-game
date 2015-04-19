@@ -11,12 +11,13 @@ public class Circle extends View {
 	private ShapeDrawable drawable;
 	private int color;
 	private int radius;
-	private static final int default_radius = 50;
+	private static final int DEFAULT_RADIUS = 50;
+	public static final int DEFAULT_ALPHA = 20;
 
 	public Circle(Context context, int color) {
 		super(context);
 		this.color = color;
-		this.radius = default_radius;
+		this.radius = DEFAULT_RADIUS;
 		initCircle();
 	}
 
@@ -34,6 +35,7 @@ public class Circle extends View {
 		circle.resize(radius, radius);
 		drawable = new ShapeDrawable(circle);
 		drawable.getPaint().setColor(color);
+		drawable.getPaint().setAlpha(DEFAULT_ALPHA);
 		int sdk = android.os.Build.VERSION.SDK_INT;
 		if (sdk < android.os.Build.VERSION_CODES.JELLY_BEAN) {
 			this.setBackgroundDrawable(drawable);
@@ -72,5 +74,11 @@ public class Circle extends View {
 	public int getColor() {
 		return color;
 	}
-
+	public int getTransparency(){
+		return drawable.getPaint().getAlpha();
+	}
+	public void setTransparency(int alpha){
+		drawable.getPaint().setAlpha(alpha);
+		invalidate();
+	}
 }

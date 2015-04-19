@@ -38,9 +38,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/RelativeLayoutLevelScoreContainer"
         android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
         android:horizontalSpacing="@dimen/grid_h_spacing"
         android:numColumns="3"
-        android:gravity="center_horizontal"
         android:verticalSpacing="@dimen/grid_v_spacing" >
 
     </GridView>

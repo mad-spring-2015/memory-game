@@ -4,14 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import android.R.animator;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
@@ -146,20 +149,12 @@ public class Game {
 		return true;
 	}
 
-	public void showScore() {
-
-	}
-
 	public void enableClicks() {
 		this.patternClickEnabled = true;
 	}
 
 	public void disableClicks() {
 		this.patternClickEnabled = false;
-	}
-
-	public void saveScore() {
-
 	}
 
 	public void playPattern() {
@@ -193,7 +188,9 @@ public class Game {
 		List<Animator> animators = new ArrayList<Animator>();
 		for (String sIdx : ordering.split(ORDERING_DELIMITER)) {
 			int idx = Integer.valueOf(sIdx);
-			Animator animator = ObjectAnimator.ofFloat(components.get(idx), "alpha", 0.2f, 1f);
+			ObjectAnimator animator = ObjectAnimator.ofInt(components.get(idx), "transparency", Circle.DEFAULT_ALPHA, 255);
+			animator.setRepeatCount(1);
+			animator.setRepeatMode(Animation.REVERSE);
 			animator.setDuration(defaultSpeed);
 			animators.add(animator);
 		}
@@ -245,6 +242,12 @@ public class Game {
 		playPattern();
 	}
 
+	/**
+	 * Stop all game related functionalities here
+	 */
+	public void end(){
+		timer.endTimer();
+	}
 	private void gotoNextLevel() {
 		ParseUser user = ParseUser.getCurrentUser();
 		int currentLevel = getLevelNo();
