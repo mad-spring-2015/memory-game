@@ -23,12 +23,8 @@ public class MemoryGame extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_memory_game);
-		if (ParseUser.getCurrentUser() == null) {
-			logUserIn("avijaya2@uncc.edu", "123");
-		} else {
-			game = new Game(this);
-			game.init();
-		}
+		game = new Game(this);
+		game.init();
 	}
 
 	private void logUserIn(String email, String pass) {
@@ -61,7 +57,9 @@ public class MemoryGame extends Activity {
 		switch (id) {
 		case R.id.menu_item_logout:
 			ParseUser.logOut();
-			recreate();
+			Intent signInIntent = new Intent(this, LoginActivity.class);
+			startActivity(signInIntent);
+			finish();
 			return true;
 		case R.id.menu_item_leaderboard:
 			Intent leaderboardIntent = new Intent(this, LeaderboardActivity.class);
@@ -76,19 +74,21 @@ public class MemoryGame extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
 	@Override
 	protected void onRestart() {
 		game.end();
 		super.onRestart();
 	}
 
-	public void playBtnClicked(View view){
+	public void playBtnClicked(View view) {
 		game.begin();
 	}
-	public void restartBtnClicked(View view){
-		if(((Button)view).getText().equals(getString(R.string.btn_txt_nxt_level))){
+
+	public void restartBtnClicked(View view) {
+		if (((Button) view).getText().equals(getString(R.string.btn_txt_nxt_level))) {
 			recreate();
-		}else{
+		} else {
 			recreate();
 		}
 	}
