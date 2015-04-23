@@ -81,6 +81,15 @@
                 <action android:name="com.parse.push.intent.OPEN" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".SelectPlayerActivity"
+            android:label="@string/title_activity_one_on_one" >
+        </activity>
+        <activity
+            android:name=".OneOnOneActivity"
+            android:label="@string/title_activity_one_on_one" >
+        </activity>
     </application>
 
 </manifest>

@@ -69,6 +69,10 @@ public class MemoryGame extends Activity {
 			Intent standingsIntent = new Intent(this, StandingsActivity.class);
 			startActivity(standingsIntent);
 			break;
+		case R.id.menu_item_one_on_one:
+			Intent oneOnOneIntent = new Intent(this, SelectPlayerActivity.class);
+			startActivity(oneOnOneIntent);
+			break;
 		default:
 			break;
 		}

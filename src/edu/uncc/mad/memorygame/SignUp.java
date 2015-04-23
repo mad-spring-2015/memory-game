@@ -63,6 +63,8 @@ public class SignUp extends Activity {
 					user.setUsername(uEmail);
 					user.put("firstName", uFName);
 					user.put("lastName", uLName);
+					user.put("score", 0);
+					user.put("level", 1);
 					user.setEmail(uEmail);
 					user.setPassword(UPwrd);
 

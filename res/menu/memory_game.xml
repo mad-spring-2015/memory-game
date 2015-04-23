@@ -15,5 +15,9 @@
         android:id="@+id/menu_item_standing"
         android:title="@string/menu_item_standing_txt">
     </item>
+    <item
+        android:id="@+id/menu_item_one_on_one"
+        android:title="@string/menu_item_one_on_one_txt">
+    </item>
 
 </menu>

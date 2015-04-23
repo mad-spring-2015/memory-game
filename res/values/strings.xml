@@ -47,5 +47,10 @@
     <string name="logoutTxt">Logout</string>
     <string name="firstNameHint">First Name</string>
     <string name="lastNameHint">Last Name</string>
+    <string name="title_activity_one_on_one">1-On-1</string>
+    <string name="selectPlayerHint">Input Player Email</string>
+    <string name="requestBtnTxt">Request</string>
+    <string name="meTxt">Me</string>
+    <string name="menu_item_one_on_one_txt">1-on-1</string>
 
 </resources>
