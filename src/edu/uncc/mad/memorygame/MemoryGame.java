@@ -27,23 +27,6 @@ public class MemoryGame extends Activity {
 		game.init();
 	}
 
-	private void logUserIn(String email, String pass) {
-		ParseUser.logInInBackground(email, pass, new LogInCallback() {
-			public void done(ParseUser user, ParseException e) {
-				if (user != null) {
-					Log.d(MemoryGame.LOGGING_KEY, "User logged in");
-					game = new Game(MemoryGame.this);
-					game.init();
-				} else {
-					Log.d(MemoryGame.LOGGING_KEY, "User couldnt b logged in");
-					if (e.getCode() == ParseException.OBJECT_NOT_FOUND) {
-						Toast.makeText(MemoryGame.this, "Dint find given user in server", Toast.LENGTH_LONG).show();
-					}
-				}
-			}
-		});
-	}
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -77,6 +60,18 @@ public class MemoryGame extends Activity {
 			break;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	@Override
+	protected void onResume() {
+		game.pauseGame();
+		super.onResume();
+	}
+
+	@Override
+	protected void onPause() {
+		game.resumeGame();
+		super.onPause();
 	}
 
 	@Override

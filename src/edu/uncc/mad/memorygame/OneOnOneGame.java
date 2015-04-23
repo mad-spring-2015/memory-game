@@ -1,5 +1,14 @@
 package edu.uncc.mad.memorygame;
 
-public class OneOnOneGame {
+import android.app.Activity;
 
+public class OneOnOneGame {
+	private Activity activity;
+	
+	public OneOnOneGame(Activity activity) {
+		
+	}
+	public void init(){
+		
+	}
 }

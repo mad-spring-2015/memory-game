@@ -14,6 +14,7 @@ public class Timer extends CountDownTimer {
 	private long millisInFuture;
 	private Activity activity;
 	private TextView tv;
+
 	public Timer(Activity activity, long millisInFuture) {
 		super(millisInFuture, 1000);
 		this.millisInFuture = millisInFuture;
@@ -23,7 +24,7 @@ public class Timer extends CountDownTimer {
 
 	public void startTimer() {
 		this.start();
-		tv.setText(TIME_REMAINING_PREFIX_TEXT + (millisUntilFinished/1000));
+		tv.setText(TIME_REMAINING_PREFIX_TEXT + (millisUntilFinished / 1000));
 		tv.setVisibility(View.VISIBLE);
 	}
 
@@ -42,13 +43,19 @@ public class Timer extends CountDownTimer {
 	@Override
 	public void onTick(long millisUntilFinished) {
 		this.millisUntilFinished = millisUntilFinished;
-		tv.setText(TIME_REMAINING_PREFIX_TEXT + (millisUntilFinished/1000));
+		tv.setText(TIME_REMAINING_PREFIX_TEXT + (millisUntilFinished / 1000));
+	}
+
+	public long pause() {
+		this.cancel();
+		return millisUntilFinished;
 	}
 
 	@Override
 	public void onFinish() {
 		Toast.makeText(activity, "Times up", Toast.LENGTH_LONG).show();
-		((Button) activity.findViewById(R.id.buttonPlay)).setVisibility(View.GONE);
+		((Button) activity.findViewById(R.id.buttonPlay))
+				.setVisibility(View.GONE);
 		Button btn = (Button) activity.findViewById(R.id.buttonRestart);
 		btn.setText(activity.getString(R.string.btn_txt_retry));
 		btn.setVisibility(View.VISIBLE);

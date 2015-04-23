@@ -47,6 +47,7 @@ public class Game {
 	 */
 	private long points;
 	private Timer timer;
+	private long timerPausedState;
 
 	public Game(Activity activity) {
 		super();
@@ -265,6 +266,14 @@ public class Game {
 
 	}
 
+	public void pauseGame(){
+		this.timerPausedState = timer.pause();
+	}
+	public void resumeGame(){
+		timer = new Timer(activity, timerPausedState);
+		timer.startTimer();
+	}
+	
 	private void restartLevel() {
 		((Button) activity.findViewById(R.id.buttonPlay)).setVisibility(View.GONE);
 		Button btn = (Button) activity.findViewById(R.id.buttonRestart);
