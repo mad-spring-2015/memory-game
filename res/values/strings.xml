@@ -6,6 +6,8 @@
     <string name="action_settings">Settings</string>
     <string name="menu_item_logout_txt">Logout</string>
     <string name="parse_class_level">Level</string>
+    <string name="parse_class_1on1_level">OneOnOneLevel</string>
+    <string name="parse_class_1on1_game">OneOnOneGames</string>
     <string name="parse_field_level_levelno">levelno</string>
     <string name="parse_field_level_noOfComp">noOfComponents</string>
     <string name="parse_field_level_ordering">ordering</string>
@@ -14,6 +16,17 @@
     <string name="parse_field_level_points">points</string>
     <string name="parse_field_user_score">score</string>
     <string name="parse_field_user_level">level</string>
+    <string name="parse_field_1on1_level_levelno">levelno</string>
+    <string name="parse_field_1on1_level_noOfComp">noOfComponents</string>
+    <string name="parse_field_1on1_level_ordering">ordering</string>
+    <string name="parse_field_1on1_level_speed">speed</string>
+    <string name="parse_field_1on1_level_points">points</string>
+    <string name="parse_field_1on1_game_userA">userA</string>
+    <string name="parse_field_1on1_game_userB">userB</string>
+    <string name="parse_field_1on1_game_scoreA">scoreA</string>
+    <string name="parse_field_1on1_game_scoreB">scoreB</string>
+    <string name="parse_field_1on1_game_statusA">statusA</string>
+    <string name="parse_field_1on1_game_statusB">statusB</string>
 
     <string-array name="availableColors">
         <item>800080</item>
