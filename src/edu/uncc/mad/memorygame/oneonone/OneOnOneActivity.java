@@ -19,6 +19,8 @@ import edu.uncc.mad.memorygame.R;
 
 public class OneOnOneActivity extends Activity {
 
+	public static final String IS_ME_INITIATOR = "isMeInitiator";
+	public static final String GAME_INSTANCE_ID = "gameInstanceId";
 	boolean isMeInitiator;
 	String gameInstanceId;
 	ParseUser opponent;
@@ -37,13 +39,13 @@ public class OneOnOneActivity extends Activity {
 		}
 		game = new OneOnOneGame(this);
 
-		this.isMeInitiator = intent.getBooleanExtra("isMeInitiator", false);
-		this.gameInstanceId = intent.getStringExtra("gameInstanceID");
+		this.isMeInitiator = intent.getBooleanExtra(IS_ME_INITIATOR, false);
+		this.gameInstanceId = intent.getStringExtra(GAME_INSTANCE_ID);
 		ParseQuery<ParseObject> gameInstanceQuery = ParseQuery.getQuery(getString(R.string.parse_class_1on1_game));
 		gameInstanceQuery.whereEqualTo("objectId", gameInstanceId);
 		final String userToInclude = isMeInitiator ? getString(R.string.parse_field_1on1_game_userB)
 				: getString(R.string.parse_field_1on1_game_userA);
-		gameInstanceQuery.include(userToInclude);
+		//gameInstanceQuery.include(userToInclude);
 		gameInstanceQuery.findInBackground(new FindCallback<ParseObject>() {
 
 			@Override

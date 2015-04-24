@@ -25,7 +25,7 @@ public class OneOnOneBroadcastReceiver extends ParsePushBroadcastReceiver {
 			JSONObject dataObject = new JSONObject(data);
 			String opponent = dataObject.getString("username");
 			oneOnOneIntent.putExtra("opponent", opponent);
-			oneOnOneIntent.putExtra("gameInstanceID", dataObject.getString("gameInstanceID"));
+			oneOnOneIntent.putExtra("gameInstanceId", dataObject.getString("gameInstanceId"));
 			oneOnOneIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			context.startActivity(oneOnOneIntent);
 		} catch (JSONException e) {

@@ -48,7 +48,11 @@
         android:layout_below="@+id/textViewMeScore"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="21dp"
-        android:numColumns="3" >
+        android:gravity="center"
+        android:horizontalSpacing="@dimen/grid_h_spacing"
+        android:numColumns="3"
+        android:verticalSpacing="@dimen/grid_v_spacing" >
+
     </GridView>
 
 </RelativeLayout>

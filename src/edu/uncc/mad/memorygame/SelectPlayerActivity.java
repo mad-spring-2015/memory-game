@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
@@ -32,12 +33,29 @@ public class SelectPlayerActivity extends Activity {
 
 	public void selectPlayerBtnClicked(View view) {
 		TextView tv = (TextView) findViewById(R.id.editTextSelectPlayer);
-		final String opponent = tv.getText().toString();
+		final String opponentUsername = tv.getText().toString();
 
+		ParseQuery<ParseUser> opponentQuery = ParseUser.getQuery();
+		opponentQuery.whereEqualTo("username", opponentUsername);
+		opponentQuery.getFirstInBackground(new GetCallback<ParseUser>() {
+			
+			@Override
+			public void done(ParseUser opponent, ParseException e) {
+				if(e != null){
+					Log.e(MemoryGame.LOGGING_KEY, "Couldnt retreive opponent", e);
+					return;
+				}
+				saveGameInstance(opponent);
+			}
+		});
+		
+	}
+
+	private void saveGameInstance(final ParseUser opponent) {
 		// Creating a game instance for sharing state
 		final ParseObject gameInstance = new ParseObject(getString(R.string.parse_class_1on1_game));
 		gameInstance.put(getString(R.string.parse_field_1on1_game_userA), ParseUser.getCurrentUser());
-		gameInstance.put(getString(R.string.parse_field_1on1_game_userB), opponent);
+		gameInstance.put(getString(R.string.parse_field_1on1_game_userB), (opponent));
 		gameInstance.put(getString(R.string.parse_field_1on1_game_scoreA), 0);
 		gameInstance.put(getString(R.string.parse_field_1on1_game_scoreB), 0);
 		gameInstance.saveInBackground(new SaveCallback() {
@@ -48,10 +66,9 @@ public class SelectPlayerActivity extends Activity {
 					Log.e(MemoryGame.LOGGING_KEY, "Couldn't save game instance", e);
 					return;
 				}
-				pushChallenge(opponent, gameInstance.getObjectId());
+				pushChallenge(opponent.getUsername(), gameInstance.getObjectId());
 			}
 		});
-
 	}
 
 	private void pushChallenge(final String opponent, final String objectId) {
@@ -67,7 +84,7 @@ public class SelectPlayerActivity extends Activity {
 			String me = ParseUser.getCurrentUser().getUsername();
 			data.put("alert", me + " is challenging you");
 			data.put("username", me);
-			data.put("gameInstanceID", objectId);
+			data.put("gameInstanceId", objectId);
 			// data.put("uri", OneOnOneActivity.class);
 		} catch (JSONException e) {
 			Log.e(MemoryGame.LOGGING_KEY, "error parsing", e);

@@ -11,6 +11,7 @@ import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.graphics.Color;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
@@ -36,7 +37,7 @@ public class OneOnOneGame {
 	private OneOnOneActivity activity;
 	private int score = 0;
 	private List<ParseObject> levels;
-	private int currentLevel = 1;
+	private int currentLevel = 0;
 	private String currentLevelOrdering;
 	private Random colorRandomizer = new Random();
 	private String[] availableColors;
@@ -53,6 +54,7 @@ public class OneOnOneGame {
 	private TextView opScoreView;
 	private static OneOnOneGame instance;
 	private Timer gameSync;
+
 	public ParseObject getGameInstance() {
 		return activity.gameInstance;
 	}
@@ -122,10 +124,17 @@ public class OneOnOneGame {
 		patternClickEnabled = false;
 		currentLevelOrdering = level.getString(getString(R.string.parse_field_1on1_level_ordering));
 		draw(level);
+		new Handler().postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				playPattern();
+			}
+		}, 1000);
 	}
 
 	private void draw(ParseObject level) {
-		((TextView) activity.findViewById(R.id.textViewScore)).setText("Score : " + score);
+		((TextView) activity.findViewById(R.id.textViewMeScore)).setText("" + score);
 		GridView gv = (GridView) activity.findViewById(R.id.gridView1on1);
 		int noOfComponents = level.getInt(getString(R.string.parse_field_1on1_level_noOfComp));
 		gv.setNumColumns((int) Math.sqrt(noOfComponents));
@@ -198,7 +207,7 @@ public class OneOnOneGame {
 	}
 
 	protected void levelFail() {
-		activity.gameInstance.put(meStatus, OneOnOneGameStatus.DONE);
+		activity.gameInstance.put(meStatus, OneOnOneGameStatus.DONE.toString());
 		activity.gameInstance.saveInBackground(new SaveCallback() {
 
 			@Override
@@ -212,12 +221,16 @@ public class OneOnOneGame {
 	protected void gotoNextLevel() {
 		score += Score.calcOneOnOneScore(levelEndTime.getTime() - levelStartTime.getTime(), levels.get(currentLevel)
 				.getInt(getString(R.string.parse_field_1on1_level_points)));
-		meScoreView.setText(score);
+		meScoreView.setText(score +"");
 		// Save score in game instance
 		activity.gameInstance.put(meScore, score);
 		activity.gameInstance.saveInBackground();
 		this.currentLevel += 1;
-		startLevel(this.levels.get(currentLevel));
+		if (this.currentLevel == levels.size()) {
+			gameFinish();
+		} else {
+			startLevel(this.levels.get(currentLevel));
+		}
 
 	}
 
@@ -231,12 +244,18 @@ public class OneOnOneGame {
 		blue = (color >> 0) & 0xFF;
 		return Color.rgb(red, green, blue);
 	}
+
 	public void pauseGame() {
 		gameSync.cancel();
 	}
-	public void resumeGame(){
+
+	public void resumeGame() {
 		GameSyncTask gameSyncTask = new GameSyncTask();
 		gameSync.scheduleAtFixedRate(gameSyncTask, 0, GAME_SYNC_INTERVAL);
+	}
+
+	public void gameFinish() {
+
 	}
 
 	/**
