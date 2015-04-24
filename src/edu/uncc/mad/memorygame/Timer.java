@@ -32,6 +32,9 @@ public class Timer extends CountDownTimer {
 		this.cancel();
 	}
 
+	public boolean isRunning(){
+		return false;
+	}
 	/**
 	 * 
 	 * @return how long a player took to complete the level
@@ -46,6 +49,10 @@ public class Timer extends CountDownTimer {
 		tv.setText(TIME_REMAINING_PREFIX_TEXT + (millisUntilFinished / 1000));
 	}
 
+	/**
+	 * Cancel the timer and return remaining time
+	 * @return
+	 */
 	public long pause() {
 		this.cancel();
 		return millisUntilFinished;

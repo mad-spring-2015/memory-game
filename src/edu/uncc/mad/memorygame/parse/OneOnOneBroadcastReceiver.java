@@ -11,7 +11,7 @@ import com.parse.ParseAnalytics;
 import com.parse.ParsePushBroadcastReceiver;
 
 import edu.uncc.mad.memorygame.MemoryGame;
-import edu.uncc.mad.memorygame.OneOnOneActivity;
+import edu.uncc.mad.memorygame.oneonone.OneOnOneActivity;
 
 public class OneOnOneBroadcastReceiver extends ParsePushBroadcastReceiver {
 

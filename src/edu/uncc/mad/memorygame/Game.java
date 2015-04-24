@@ -187,7 +187,8 @@ public class Game {
 		List<Animator> animators = new ArrayList<Animator>();
 		for (String sIdx : ordering.split(ORDERING_DELIMITER)) {
 			int idx = Integer.valueOf(sIdx);
-			ObjectAnimator animator = ObjectAnimator.ofInt(components.get(idx), "transparency", Circle.DEFAULT_ALPHA, 255);
+			ObjectAnimator animator = ObjectAnimator.ofInt(components.get(idx), "transparency", Circle.DEFAULT_ALPHA,
+					255);
 			animator.setRepeatCount(1);
 			animator.setRepeatMode(Animation.REVERSE);
 			animator.setDuration(defaultSpeed);
@@ -244,16 +245,17 @@ public class Game {
 	/**
 	 * Stop all game related functionalities here
 	 */
-	public void end(){
+	public void end() {
 		timer.endTimer();
 	}
+
 	private void gotoNextLevel() {
 		ParseUser user = ParseUser.getCurrentUser();
 		int currentLevel = getLevelNo();
 		int currentScore = getScore();
 		user.put(getString(R.string.parse_field_user_level), currentLevel + 1);
 		user.put(getString(R.string.parse_field_user_score),
-				currentScore + Score.calcScore( timer.getTime(), this.timeinMillSec, this.points));
+				currentScore + Score.calcSinglePlayerScore(timer.getTime(), this.timeinMillSec, this.points));
 		user.saveInBackground(new SaveCallback() {
 
 			@Override
@@ -266,14 +268,17 @@ public class Game {
 
 	}
 
-	public void pauseGame(){
-		this.timerPausedState = timer.pause();
+	public void pauseGame() {
+		if (timer.isRunning()) {
+			this.timerPausedState = timer.pause();
+		}
 	}
-	public void resumeGame(){
+
+	public void resumeGame() {
 		timer = new Timer(activity, timerPausedState);
 		timer.startTimer();
 	}
-	
+
 	private void restartLevel() {
 		((Button) activity.findViewById(R.id.buttonPlay)).setVisibility(View.GONE);
 		Button btn = (Button) activity.findViewById(R.id.buttonRestart);

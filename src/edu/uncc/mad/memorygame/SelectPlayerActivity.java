@@ -20,6 +20,8 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SendCallback;
 
+import edu.uncc.mad.memorygame.oneonone.OneOnOneActivity;
+
 public class SelectPlayerActivity extends Activity {
 
 	@Override

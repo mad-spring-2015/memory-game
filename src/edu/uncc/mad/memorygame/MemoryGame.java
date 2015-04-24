@@ -3,15 +3,11 @@ package edu.uncc.mad.memorygame;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.parse.LogInCallback;
-import com.parse.ParseException;
 import com.parse.ParseUser;
 
 public class MemoryGame extends Activity {
@@ -61,16 +57,20 @@ public class MemoryGame extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	@Override
 	protected void onResume() {
-		game.pauseGame();
+		if (game != null) {
+			game.resumeGame();
+		}
 		super.onResume();
 	}
 
 	@Override
 	protected void onPause() {
-		game.resumeGame();
+		if (game != null) {
+			game.pauseGame();
+		}
 		super.onPause();
 	}
 
