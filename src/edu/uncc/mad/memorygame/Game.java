@@ -275,8 +275,10 @@ public class Game {
 	}
 
 	public void resumeGame() {
-		timer = new Timer(activity, timerPausedState);
-		timer.startTimer();
+		if (timerPausedState > 0) {
+			timer = new Timer(activity, timerPausedState);
+			timer.startTimer();
+		}
 	}
 
 	private void restartLevel() {
