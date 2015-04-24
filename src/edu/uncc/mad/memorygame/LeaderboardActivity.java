@@ -12,6 +12,6 @@ public class LeaderboardActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_leaderboard);
 		
-		/* a aaksdf;*/
+		
 	}
 }
