@@ -32,7 +32,7 @@ import edu.uncc.mad.memorygame.R;
 import edu.uncc.mad.memorygame.Score;
 
 public class OneOnOneGame {
-	private static final int GAME_SYNC_INTERVAL = 3;
+	private static final int GAME_SYNC_INTERVAL = 5000;
 	private static final String ORDERING_DELIMITER = ",";
 	private OneOnOneActivity activity;
 	private int score = 0;
@@ -51,6 +51,8 @@ public class OneOnOneGame {
 	private String meStatus;
 	private String opScore;
 	private String opStatus;
+	private String meUser;
+	private String opUser;
 	private TextView opScoreView;
 	private static OneOnOneGame instance;
 	private Timer gameSync;
@@ -74,15 +76,19 @@ public class OneOnOneGame {
 	public void init() {
 
 		if (!activity.isMeInitiator) {
-			meScore = getString(R.string.parse_field_1on1_game_userB);
+			meScore = getString(R.string.parse_field_1on1_game_scoreB);
+			meUser = getString(R.string.parse_field_1on1_game_userB);
 			meStatus = getString(R.string.parse_field_1on1_game_statusB);
-			opScore = getString(R.string.parse_field_1on1_game_userA);
+			opScore = getString(R.string.parse_field_1on1_game_scoreA);
+			opUser = getString(R.string.parse_field_1on1_game_userA);
 			opStatus = getString(R.string.parse_field_1on1_game_statusA);
 		} else {
-			meScore = getString(R.string.parse_field_1on1_game_userA);
+			meScore = getString(R.string.parse_field_1on1_game_scoreA);
+			meUser = getString(R.string.parse_field_1on1_game_userA);
 			meStatus = getString(R.string.parse_field_1on1_game_statusA);
-			opScore = getString(R.string.parse_field_1on1_game_userB);
-			opStatus = getString(R.string.parse_field_1on1_game_statusA);
+			opScore = getString(R.string.parse_field_1on1_game_scoreB);
+			opUser = getString(R.string.parse_field_1on1_game_userB);
+			opStatus = getString(R.string.parse_field_1on1_game_statusB);
 		}
 		meStatus = activity.isMeInitiator ? getString(R.string.parse_field_1on1_game_statusB)
 				: getString(R.string.parse_field_1on1_game_statusA);
@@ -115,7 +121,7 @@ public class OneOnOneGame {
 	public void postInit() {
 		startLevel(levels.get(currentLevel));
 		GameSyncTask gameSyncTask = new GameSyncTask();
-		gameSync = new Timer();
+		gameSync = new Timer("GameSyncTask");
 		gameSync.scheduleAtFixedRate(gameSyncTask, 0, GAME_SYNC_INTERVAL);
 	}
 
@@ -224,7 +230,16 @@ public class OneOnOneGame {
 		meScoreView.setText(score +"");
 		// Save score in game instance
 		activity.gameInstance.put(meScore, score);
-		activity.gameInstance.saveInBackground();
+		activity.gameInstance.saveInBackground(new SaveCallback() {
+			
+			@Override
+			public void done(ParseException e) {
+				if(e !=null){
+					Log.e(MemoryGame.LOGGING_KEY, "problem syncing score", e);
+				}
+				
+			}
+		});
 		this.currentLevel += 1;
 		if (this.currentLevel == levels.size()) {
 			gameFinish();

@@ -20,6 +20,7 @@ public class GameSyncTask extends TimerTask {
 
 	private ParseObject gameInstance;
 
+	
 	@Override
 	public void run() {
 		gameInstance = OneOnOneGame.getCurrentGame().getGameInstance();

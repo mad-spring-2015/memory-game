@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.GetCallback;
+import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
@@ -58,8 +59,12 @@ public class SelectPlayerActivity extends Activity {
 		gameInstance.put(getString(R.string.parse_field_1on1_game_userB), (opponent));
 		gameInstance.put(getString(R.string.parse_field_1on1_game_scoreA), 0);
 		gameInstance.put(getString(R.string.parse_field_1on1_game_scoreB), 0);
+		ParseACL acl = new ParseACL(ParseUser.getCurrentUser());
+		acl.setWriteAccess(opponent, true);
+		acl.setReadAccess(opponent, true);
+		gameInstance.setACL(acl);
 		gameInstance.saveInBackground(new SaveCallback() {
-
+			
 			@Override
 			public void done(ParseException e) {
 				if (e != null) {
