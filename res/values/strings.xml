@@ -65,5 +65,6 @@
     <string name="requestBtnTxt">Request</string>
     <string name="meTxt">Me</string>
     <string name="menu_item_one_on_one_txt">1-on-1</string>
+    <string name="title_activity_splash_fragment">SplashFragment</string>
 
 </resources>
