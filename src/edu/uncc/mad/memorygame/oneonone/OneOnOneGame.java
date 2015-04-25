@@ -90,8 +90,6 @@ public class OneOnOneGame {
 			opUser = getString(R.string.parse_field_1on1_game_userB);
 			opStatus = getString(R.string.parse_field_1on1_game_statusB);
 		}
-		meStatus = activity.isMeInitiator ? getString(R.string.parse_field_1on1_game_statusB)
-				: getString(R.string.parse_field_1on1_game_statusA);
 		ParseQuery<ParseObject> levelQuery = ParseQuery.getQuery(getString(R.string.parse_class_1on1_level));
 		levelQuery.findInBackground(new FindCallback<ParseObject>() {
 
