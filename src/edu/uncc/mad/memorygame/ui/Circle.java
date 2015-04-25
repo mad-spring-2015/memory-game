@@ -1,4 +1,4 @@
-package edu.uncc.mad.memorygame;
+package edu.uncc.mad.memorygame.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,7 +11,7 @@ public class Circle extends View {
 	private ShapeDrawable drawable;
 	private int color;
 	private int radius;
-	private static final int DEFAULT_RADIUS = 50;
+	private static final int DEFAULT_RADIUS = 100;
 	public static final int DEFAULT_ALPHA = 20;
 
 	public Circle(Context context, int color) {
@@ -60,10 +60,49 @@ public class Circle extends View {
 		 * int w = resolveSizeAndState(radius, widthMeasureSpec, 1); int h =
 		 * resolveSizeAndState(radius, heightMeasureSpec, 1);
 		 */
-		int w = radius;
-		int h = radius;
-		setMeasuredDimension(w, h);
-	}
+		super.onMeasure(widthMeasureSpec, widthMeasureSpec);
+		/* int desiredWidth = radius;
+		    int desiredHeight = radius;
+
+		    int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+		    int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+		    int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+		    int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+
+		    int width;
+		    int height;
+
+		    //Measure Width
+		    if (widthMode == MeasureSpec.EXACTLY) {
+		        //Must be this size
+		        width = widthSize;
+		    } else if (widthMode == MeasureSpec.AT_MOST) {
+		        //Can't be bigger than...
+		        width = Math.min(desiredWidth, widthSize);
+		    } else {
+		        //Be whatever you want
+		        width = desiredWidth;
+		    }
+
+		    //Measure Height
+		    if (heightMode == MeasureSpec.EXACTLY) {
+		        //Must be this size
+		        height = heightSize;
+		    } else if (heightMode == MeasureSpec.AT_MOST) {
+		        //Can't be bigger than...
+		        height = Math.min(desiredHeight, heightSize);
+		    } else {
+		        //Be whatever you want
+		        height = desiredHeight;
+		    }
+
+		    //MUST CALL THIS
+		    setMeasuredDimension(width, height);*/
+		}
+
+	/*
+	 * int w = radius; int h = radius; setMeasuredDimension(w, h); }
+	 */
 
 	@Override
 	protected void onDraw(Canvas canvas) {

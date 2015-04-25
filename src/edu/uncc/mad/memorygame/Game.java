@@ -26,6 +26,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import edu.uncc.mad.memorygame.ui.Circle;
+
 public class Game {
 	private static final String ORDERING_DELIMITER = ",";
 	private String ordering;

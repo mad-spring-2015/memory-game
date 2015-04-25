@@ -25,11 +25,11 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
-import edu.uncc.mad.memorygame.Circle;
 import edu.uncc.mad.memorygame.CircleAdapter;
 import edu.uncc.mad.memorygame.MemoryGame;
 import edu.uncc.mad.memorygame.R;
 import edu.uncc.mad.memorygame.Score;
+import edu.uncc.mad.memorygame.ui.Circle;
 
 public class OneOnOneGame {
 	private static final int GAME_SYNC_INTERVAL = 5000;

@@ -2,6 +2,7 @@ package edu.uncc.mad.memorygame;
 
 import java.util.List;
 
+import edu.uncc.mad.memorygame.ui.Circle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
