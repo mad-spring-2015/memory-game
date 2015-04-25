@@ -90,6 +90,10 @@
             android:name="edu.uncc.mad.memorygame.oneonone.OneOnOneActivity"
             android:label="@string/title_activity_one_on_one" >
         </activity>
+        <activity
+            android:name=".SplashFragment"
+            android:label="@string/title_activity_splash_fragment" >
+        </activity>
     </application>
 
 </manifest>
