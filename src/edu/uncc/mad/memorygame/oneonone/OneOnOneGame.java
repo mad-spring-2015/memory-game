@@ -71,6 +71,7 @@ public class OneOnOneGame {
 		this.meScoreView = (TextView) activity.findViewById(R.id.textViewMeScore);
 		this.opScoreView = (TextView) activity.findViewById(R.id.textViewOpponentScore);
 		instance = this;
+
 	}
 
 	public void init() {
@@ -82,6 +83,9 @@ public class OneOnOneGame {
 			opScore = getString(R.string.parse_field_1on1_game_scoreA);
 			opUser = getString(R.string.parse_field_1on1_game_userA);
 			opStatus = getString(R.string.parse_field_1on1_game_statusA);
+
+			// update status
+			GameInstanceHandler.saveOpponentGameStatus(OneOnOneGameStatus.PLAYING);
 		} else {
 			meScore = getString(R.string.parse_field_1on1_game_scoreA);
 			meUser = getString(R.string.parse_field_1on1_game_userA);
@@ -89,6 +93,8 @@ public class OneOnOneGame {
 			opScore = getString(R.string.parse_field_1on1_game_scoreB);
 			opUser = getString(R.string.parse_field_1on1_game_userB);
 			opStatus = getString(R.string.parse_field_1on1_game_statusB);
+
+			GameInstanceHandler.saveMyGameStatus(OneOnOneGameStatus.PLAYING);
 		}
 		ParseQuery<ParseObject> levelQuery = ParseQuery.getQuery(getString(R.string.parse_class_1on1_level));
 		levelQuery.findInBackground(new FindCallback<ParseObject>() {
@@ -129,7 +135,7 @@ public class OneOnOneGame {
 		currentLevelOrdering = level.getString(getString(R.string.parse_field_1on1_level_ordering));
 		draw(level);
 		new Handler().postDelayed(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				playPattern();
@@ -225,17 +231,17 @@ public class OneOnOneGame {
 	protected void gotoNextLevel() {
 		score += Score.calcOneOnOneScore(levelEndTime.getTime() - levelStartTime.getTime(), levels.get(currentLevel)
 				.getInt(getString(R.string.parse_field_1on1_level_points)));
-		meScoreView.setText(score +"");
+		meScoreView.setText(score + "");
 		// Save score in game instance
 		activity.gameInstance.put(meScore, score);
 		activity.gameInstance.saveInBackground(new SaveCallback() {
-			
+
 			@Override
 			public void done(ParseException e) {
-				if(e !=null){
+				if (e != null) {
 					Log.e(MemoryGame.LOGGING_KEY, "problem syncing score", e);
 				}
-				
+
 			}
 		});
 		this.currentLevel += 1;
@@ -268,7 +274,18 @@ public class OneOnOneGame {
 	}
 
 	public void gameFinish() {
+		if (isPlaying()) {
+			gameForfeit();
+		}
 
+	}
+
+	public void gameForfeit() {
+		if (activity.isMeInitiator) {
+			GameInstanceHandler.saveMyGameStatus(OneOnOneGameStatus.EXITED);
+		} else {
+			GameInstanceHandler.saveOpponentGameStatus(OneOnOneGameStatus.EXITED);
+		}
 	}
 
 	/**
@@ -283,6 +300,13 @@ public class OneOnOneGame {
 			return false;
 		}
 		return true;
+	}
+
+	public boolean isPlaying() {
+		if (currentLevel <= levels.size()) {
+			return true;
+		}
+		return false;
 	}
 
 	public void enableClicks() {

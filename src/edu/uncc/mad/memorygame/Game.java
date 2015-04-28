@@ -70,6 +70,11 @@ public class Game {
 			@Override
 			public void done(List<ParseObject> levels, ParseException e) {
 				if (levels != null) {
+					if(levels.size() == 0 ){
+						Toast.makeText(activity, "No more levels", Toast.LENGTH_LONG).show();
+						activity.findViewById(R.id.buttonPlay).setEnabled(false);
+						return;
+					}
 					ParseObject level = levels.get(0);
 					Game.this.ordering = level.getString(getString(R.string.parse_field_level_ordering));
 					Game.this.noOfComponents = level.getInt(getString(R.string.parse_field_level_noOfComp));

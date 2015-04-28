@@ -73,4 +73,10 @@ public class OneOnOneActivity extends Activity {
 		 */
 		((TextView) findViewById(R.id.textViewOpponentTxt)).setText(opponentUsername);
 	}
+
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+	}
 }

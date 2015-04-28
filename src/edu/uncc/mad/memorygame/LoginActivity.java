@@ -17,6 +17,7 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class LoginActivity extends Activity {
 
@@ -65,7 +66,16 @@ public class LoginActivity extends Activity {
 					ParseInstallation installation = ParseInstallation.getCurrentInstallation();
 					installation.put("user", user);
 					installation.put("username", user.getUsername());
-					installation.saveInBackground();
+					installation.saveInBackground(new SaveCallback() {
+
+						@Override
+						public void done(ParseException e) {
+							if (e != null) {
+								Log.e(MemoryGame.LOGGING_KEY, "couldn't save installation", e);
+							}
+
+						}
+					});
 
 					Intent intent = new Intent(LoginActivity.this, MemoryGame.class);
 					startActivity(intent);

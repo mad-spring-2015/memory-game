@@ -2,8 +2,6 @@ package edu.uncc.mad.memorygame;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 public class StandingsActivity extends Activity {
 
