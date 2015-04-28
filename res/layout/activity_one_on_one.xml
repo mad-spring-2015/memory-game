@@ -55,4 +55,13 @@
 
     </GridView>
 
+    <TextView
+        android:id="@+id/textViewMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/gridView1on1"
+        android:layout_centerHorizontal="true"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
 </RelativeLayout>

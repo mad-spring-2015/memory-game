@@ -13,6 +13,6 @@ public class GameSyncTask extends TimerTask {
 
 	@Override
 	public void run() {
-		GameInstanceHandler.updateOpponentScore();
+		GameInstanceHandler.updateOpponentScoreOnScreen();
 	}
 }

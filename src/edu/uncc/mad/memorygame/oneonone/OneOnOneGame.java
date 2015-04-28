@@ -83,9 +83,6 @@ public class OneOnOneGame {
 			opScore = getString(R.string.parse_field_1on1_game_scoreA);
 			opUser = getString(R.string.parse_field_1on1_game_userA);
 			opStatus = getString(R.string.parse_field_1on1_game_statusA);
-
-			// update status
-			GameInstanceHandler.saveOpponentGameStatus(OneOnOneGameStatus.PLAYING);
 		} else {
 			meScore = getString(R.string.parse_field_1on1_game_scoreA);
 			meUser = getString(R.string.parse_field_1on1_game_userA);
@@ -93,9 +90,8 @@ public class OneOnOneGame {
 			opScore = getString(R.string.parse_field_1on1_game_scoreB);
 			opUser = getString(R.string.parse_field_1on1_game_userB);
 			opStatus = getString(R.string.parse_field_1on1_game_statusB);
-
-			GameInstanceHandler.saveMyGameStatus(OneOnOneGameStatus.PLAYING);
 		}
+		GameInstanceHandler.updateMyGameStatus(OneOnOneGameStatus.PLAYING);
 		ParseQuery<ParseObject> levelQuery = ParseQuery.getQuery(getString(R.string.parse_class_1on1_level));
 		levelQuery.findInBackground(new FindCallback<ParseObject>() {
 
@@ -216,16 +212,11 @@ public class OneOnOneGame {
 		animatorSet.start();
 	}
 
+	/**
+	 * Called when player fails to complete the current level
+	 */
 	protected void levelFail() {
-		activity.gameInstance.put(meStatus, OneOnOneGameStatus.DONE.toString());
-		activity.gameInstance.saveInBackground(new SaveCallback() {
-
-			@Override
-			public void done(ParseException e) {
-				// TODO after fail screen
-
-			}
-		});
+		GameInstanceHandler.updateMyGameStatusAndShowMsg(OneOnOneGameStatus.DONE);
 	}
 
 	protected void gotoNextLevel() {
@@ -233,17 +224,7 @@ public class OneOnOneGame {
 				.getInt(getString(R.string.parse_field_1on1_level_points)));
 		meScoreView.setText(score + "");
 		// Save score in game instance
-		activity.gameInstance.put(meScore, score);
-		activity.gameInstance.saveInBackground(new SaveCallback() {
-
-			@Override
-			public void done(ParseException e) {
-				if (e != null) {
-					Log.e(MemoryGame.LOGGING_KEY, "problem syncing score", e);
-				}
-
-			}
-		});
+		GameInstanceHandler.saveScore(score);
 		this.currentLevel += 1;
 		if (this.currentLevel == levels.size()) {
 			gameFinish();
@@ -281,11 +262,7 @@ public class OneOnOneGame {
 	}
 
 	public void gameForfeit() {
-		if (activity.isMeInitiator) {
-			GameInstanceHandler.saveMyGameStatus(OneOnOneGameStatus.EXITED);
-		} else {
-			GameInstanceHandler.saveOpponentGameStatus(OneOnOneGameStatus.EXITED);
-		}
+		GameInstanceHandler.updateMyGameStatus(OneOnOneGameStatus.EXITED);
 	}
 
 	/**
@@ -325,6 +302,11 @@ public class OneOnOneGame {
 		return meScoreView;
 	}
 
+	/**
+	 * String for the field that represents current player's score
+	 * 
+	 * @return
+	 */
 	public String getMeScore() {
 		return meScore;
 	}

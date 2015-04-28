@@ -19,6 +19,7 @@ public class MemoryGame extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_memory_game);
+		//TODO add margin for single game
 		game = new Game(this);
 		game.init();
 	}
