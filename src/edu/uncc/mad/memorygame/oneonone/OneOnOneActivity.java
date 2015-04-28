@@ -61,16 +61,6 @@ public class OneOnOneActivity extends Activity {
 
 			}
 		});
-		/*
-		 * ParseQuery<ParseUser> opponentQuery = ParseUser.getQuery();
-		 * opponentQuery.whereEqualTo("username", opponent);
-		 * opponentQuery.findInBackground(new FindCallback<ParseUser>() {
-		 * 
-		 * @Override public void done(List<ParseUser> users, ParseException e) {
-		 * if (e != null) { Log.e(MemoryGame.LOGGING_KEY,
-		 * "error fetching opponent", e); return; } opponent = users.get(0); //
-		 * TODO start game } });
-		 */
 		((TextView) findViewById(R.id.textViewOpponentTxt)).setText(opponentUsername);
 	}
 
