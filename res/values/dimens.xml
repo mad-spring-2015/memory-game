@@ -7,5 +7,4 @@
     <dimen name="grid_h_spacing">5px</dimen>
     <dimen name="grid_v_spacing">5px</dimen>
     <dimen name="grid_height">300dp</dimen>
-
 </resources>
