@@ -4,8 +4,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -23,8 +25,12 @@ import com.parse.SaveCallback;
 import com.parse.SendCallback;
 
 import edu.uncc.mad.memorygame.oneonone.OneOnOneActivity;
+import edu.uncc.mad.memorygame.oneonone.OneOnOneGameStatus;
+import edu.uncc.mad.memorygame.oneonone.WaitForOpponentAcceptTask;
 
 public class SelectPlayerActivity extends Activity {
+
+	private ParseObject gameInstance;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,22 +45,21 @@ public class SelectPlayerActivity extends Activity {
 		ParseQuery<ParseUser> opponentQuery = ParseUser.getQuery();
 		opponentQuery.whereEqualTo("username", opponentUsername);
 		opponentQuery.getFirstInBackground(new GetCallback<ParseUser>() {
-			
+
 			@Override
 			public void done(ParseUser opponent, ParseException e) {
-				if(e != null){
+				if (e != null) {
 					Log.e(MemoryGame.LOGGING_KEY, "Couldnt retreive opponent", e);
 					return;
 				}
 				saveGameInstance(opponent);
 			}
 		});
-		
+
 	}
 
 	private void saveGameInstance(final ParseUser opponent) {
-		// Creating a game instance for sharing state
-		final ParseObject gameInstance = new ParseObject(getString(R.string.parse_class_1on1_game));
+		gameInstance = new ParseObject(getString(R.string.parse_class_1on1_game));
 		gameInstance.put(getString(R.string.parse_field_1on1_game_userA), ParseUser.getCurrentUser());
 		gameInstance.put(getString(R.string.parse_field_1on1_game_userB), (opponent));
 		gameInstance.put(getString(R.string.parse_field_1on1_game_scoreA), 0);
@@ -64,7 +69,7 @@ public class SelectPlayerActivity extends Activity {
 		acl.setReadAccess(opponent, true);
 		gameInstance.setACL(acl);
 		gameInstance.saveInBackground(new SaveCallback() {
-			
+
 			@Override
 			public void done(ParseException e) {
 				if (e != null) {
@@ -102,7 +107,7 @@ public class SelectPlayerActivity extends Activity {
 			public void done(ParseException e) {
 				if (e == null) {
 					Log.d(MemoryGame.LOGGING_KEY, "done pushing", e);
-					startOneOnOne(opponent, objectId);
+					waitForOpponentToJoin(opponent, objectId);
 				} else {
 					Toast.makeText(getBaseContext(), "Error requesing challenge " + e.getMessage(), Toast.LENGTH_LONG)
 							.show();
@@ -111,17 +116,15 @@ public class SelectPlayerActivity extends Activity {
 		});
 	}
 
-	/**
-	 * 
-	 * @param opponent
-	 * @param objectId
-	 *            We'll need this at the opponent side to maintain shared state
-	 */
-	private void startOneOnOne(String opponent, String objectId) {
-		Intent intent = new Intent(SelectPlayerActivity.this, OneOnOneActivity.class);
-		intent.putExtra("opponent", opponent);
-		intent.putExtra("isMeInitiator", true);
-		intent.putExtra("gameInstanceId", objectId);
-		startActivity(intent);
+	private void waitForOpponentToJoin(final String opponent, final String objectId) {
+		final ProgressDialog progress = new ProgressDialog(this);
+		progress.setTitle("Waiting on Opponent");
+		progress.setMessage("Waiting for opponent to accept the challenge!");
+		progress.show();
+		final CountDownTimer cdTimer = new WaitForOpponentAcceptTask(gameInstance, progress, this, opponent, objectId);
+		cdTimer.start();
+
 	}
+
+	
 }
