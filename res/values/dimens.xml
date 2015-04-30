@@ -8,4 +8,7 @@
     <dimen name="grid_v_spacing">5px</dimen>
     <dimen name="grid_height">300dp</dimen>
     <dimen name="lb_score_text_size">35dp</dimen>
+    <dimen name="component_spacing">8dp</dimen>
+    <dimen name="score_panel_padding">16dp</dimen>
+    <dimen name="score_panel_side_padding">4dp</dimen>
 </resources>

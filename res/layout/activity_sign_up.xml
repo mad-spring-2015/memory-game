@@ -11,8 +11,7 @@
     <LinearLayout
         android:id="@+id/linearLayoutNameHolder"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content" >
 
         <EditText
             android:id="@+id/editTextFirstName"
@@ -46,7 +45,6 @@
         android:ems="10"
         android:hint="@string/email"
         android:inputType="textEmailAddress" >
-
     </EditText>
 
     <EditText
@@ -73,19 +71,24 @@
 
     <Button
         android:id="@+id/buttonSignup"
+        style="@style/MG_Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editTextPasswordConfirm"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp"
+        android:background="@drawable/buttonshape"
         android:text="@string/signup" />
 
     <Button
         android:id="@+id/buttonCancel"
+        style="@style/MG_Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_alignLeft="@+id/buttonSignup"
         android:layout_below="@+id/buttonSignup"
+        android:background="@drawable/buttonshape"
         android:text="@string/cancel" />
 
 </RelativeLayout>

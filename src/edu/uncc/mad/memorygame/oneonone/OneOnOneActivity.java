@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -45,7 +46,7 @@ public class OneOnOneActivity extends Activity {
 		gameInstanceQuery.whereEqualTo("objectId", gameInstanceId);
 		final String userToInclude = isMeInitiator ? getString(R.string.parse_field_1on1_game_userB)
 				: getString(R.string.parse_field_1on1_game_userA);
-		//gameInstanceQuery.include(userToInclude);
+		// gameInstanceQuery.include(userToInclude);
 		gameInstanceQuery.findInBackground(new FindCallback<ParseObject>() {
 
 			@Override
@@ -53,7 +54,22 @@ public class OneOnOneActivity extends Activity {
 				if (e == null) {
 					gameInstance = objects.get(0);
 					opponent = gameInstance.getParseUser(userToInclude);
+					opponent.fetchIfNeededInBackground(new GetCallback<ParseUser>() {
+
+						@Override
+						public void done(ParseUser object, ParseException e) {
+							if (e != null) {
+								Log.e(MemoryGame.LOGGING_KEY, "error fetching opponent", e);
+								return;
+							}
+							((TextView) findViewById(R.id.textViewOpponentTxt)).setText(object
+									.getString(getString(R.string.parse_field_user_firstname)));
+							opponent = object;
+
+						}
+					});
 					game.init();
+
 				} else {
 					Log.e(MemoryGame.LOGGING_KEY, "error fetching game instance", e);
 					return;
@@ -61,7 +77,7 @@ public class OneOnOneActivity extends Activity {
 
 			}
 		});
-		((TextView) findViewById(R.id.textViewOpponentTxt)).setText(opponentUsername);
+
 	}
 
 	@Override

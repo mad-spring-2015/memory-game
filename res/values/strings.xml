@@ -29,14 +29,26 @@
     <string name="parse_field_1on1_game_statusB">statusB</string>
 
     <string-array name="availableColors">
-        <item>800080</item>
-        <item>3CB371</item>
-        <item>BC8F8F</item>
-        <item>D2B48C</item>
-        <item>B8860B</item>
-        <item>6495ED</item>
-        <item>778899</item>
-        <item>FFA500</item>
+        <item>F44336</item>
+        <item>E91E63</item>
+        <item>9C27B0</item>
+        <item>673AB7</item>
+        <item>3F51B5</item>
+        <item>2196F3</item>
+        <item>03A9F4</item>
+        <item>00BCD4</item>
+        <item>009688</item>
+        <item>4CAF50</item>
+        <item>8BC34A</item>
+        <item>CDDC39</item>
+        <item>FFEB3B</item>
+        <item>FFC107</item>
+        <item>FF9800</item>
+        <item>FF5722</item>
+        <item>795548</item>
+        <item>9E9E9E</item>
+        <item>607D8B</item>
+        
     </string-array>
 
     <string name="play_btn_text">Lets Play!</string>
@@ -52,10 +64,10 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="login">Login</string>
-    <string name="signup">Sign Up</string>
-    <string name="cancel">Cancel</string>
-    <string name="new_account">Create New Account</string>
+    <string name="login">LOGIN</string>
+    <string name="signup">SIGN UP</string>
+    <string name="cancel">CANCEL</string>
+    <string name="new_account">NEW USER</string>
     <string name="alertTextHint">Enter Text</string>
     <string name="logoutTxt">Logout</string>
     <string name="firstNameHint">First Name</string>

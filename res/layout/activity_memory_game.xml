@@ -11,7 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_centerVertical="false" >
+        android:layout_centerVertical="false"
+        android:paddingBottom="@dimen/score_panel_padding"
+        android:paddingLeft="@dimen/score_panel_side_padding"
+        android:paddingRight="@dimen/score_panel_side_padding"
+        android:paddingTop="@dimen/score_panel_padding" >
 
         <TextView
             android:id="@+id/textViewLevel"
@@ -24,7 +28,7 @@
 
         <TextView
             android:id="@+id/textViewScore"
-           style="@style/MemoryGame.LargeText"
+            style="@style/MemoryGame.LargeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -37,10 +41,12 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/RelativeLayoutLevelScoreContainer"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/component_spacing"
         android:gravity="center_horizontal"
         android:horizontalSpacing="@dimen/grid_h_spacing"
         android:numColumns="3"
         android:verticalSpacing="@dimen/grid_v_spacing" >
+
     </GridView>
 
     <TextView
@@ -50,23 +56,29 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/gridViewGame"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/component_spacing"
+        android:layout_marginTop="@dimen/component_spacing"
         android:visibility="invisible" />
 
     <Button
         android:id="@+id/buttonPlay"
-        android:layout_width="wrap_content"
+        style="@style/MG_Button"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewTimeRem"
         android:layout_centerHorizontal="true"
+        android:background="@drawable/buttonshape"
         android:onClick="playBtnClicked"
         android:text="@string/play_btn_text" />
 
     <Button
         android:id="@+id/buttonRestart"
-        android:layout_width="wrap_content"
+        style="@style/MG_Button"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/textViewTimeRem"
         android:layout_centerHorizontal="true"
+        android:background="@drawable/buttonshape"
         android:onClick="restartBtnClicked"
         android:text="@string/btn_txt_nxt_level"
         android:visibility="gone" />

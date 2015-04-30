@@ -28,22 +28,27 @@
 
     <Button
         android:id="@+id/buttonLogin"
+        style="@style/MG_Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editTextPassword"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp"
-        android:text="@string/login" 
-        android:onClick="loginClicked"/>
+        android:background="@drawable/buttonshape"
+        android:onClick="loginClicked"
+        android:text="@string/login" />
 
     <Button
         android:id="@+id/buttonCreateNewAccount"
+        style="@style/MG_Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/buttonLogin"
         android:layout_below="@+id/buttonLogin"
-        android:text="@string/new_account"
-         android:onClick="signUpClicked" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/buttonshape"
+        android:onClick="signUpClicked"
+        android:text="@string/new_account" />
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
