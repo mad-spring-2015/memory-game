@@ -3,7 +3,7 @@
  * Ayang
  * Nachiket Doke
  */
-package edu.uncc.mad.memorygame;
+package edu.uncc.mad.memorygame.parse;
 
 import android.app.Application;
 import android.util.Log;
@@ -14,6 +14,8 @@ import com.parse.ParseACL;
 import com.parse.ParseException;
 import com.parse.ParsePush;
 import com.parse.SaveCallback;
+
+import edu.uncc.mad.memorygame.MemoryGame;
 
 public class ParseApplication extends Application {
 

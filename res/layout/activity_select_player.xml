@@ -5,27 +5,31 @@
     android:layout_margin="@dimen/activity_horizontal_margin"
     tools:context="${relativePackage}.${activityClass}" >
 
-    <EditText
-        android:id="@+id/editTextSelectPlayer"
+    <ListView
+        android:id="@+id/listViewSelectPlayer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="18dp"
-        android:ems="10"
-        android:hint="@string/selectPlayerHint" >
+        android:layout_marginTop="24dp" >
+    </ListView>
 
-        <requestFocus />
-    </EditText>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
-    <Button
-        android:id="@+id/buttonRequest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/editTextSelectPlayer"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="17dp"
-        android:text="@string/requestBtnTxt" 
-        android:onClick="selectPlayerBtnClicked"/>
+        <ProgressBar
+            android:id="@+id/progressBarSp"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/textViewSpStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    </LinearLayout>
 
 </RelativeLayout>

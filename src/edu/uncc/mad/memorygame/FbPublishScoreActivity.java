@@ -3,10 +3,12 @@ package edu.uncc.mad.memorygame;
 import java.util.Arrays;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -23,14 +25,18 @@ import com.parse.ParseUser;
 public class FbPublishScoreActivity extends Activity {
 
 	private CallbackManager callbackManager;
+	private ProgressDialog progressDialog;
+	private TextView statusView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_fb_publish_score);
 		callbackManager = CallbackManager.Factory.create();
+		statusView = (TextView) findViewById(R.id.textViewFbPostStatus);
 		if (AccessToken.getCurrentAccessToken() == null) {
-
+			statusView.setText("You have to be logged in as facebook user to user this feature.");
+			return;
 		} else {
 			if (!AccessToken.getCurrentAccessToken().getPermissions().contains("publish_actions")) {
 				LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -64,6 +70,10 @@ public class FbPublishScoreActivity extends Activity {
 
 	private void shareHighScore() {
 
+		progressDialog = new ProgressDialog(this);
+		progressDialog.setTitle("Loading");
+		progressDialog.setMessage("Posting your highscore");
+		progressDialog.show();
 		ParseUser user = ParseUser.getCurrentUser();
 		ShareLinkContent linkContent = new ShareLinkContent.Builder()
 				.setContentTitle("Hello Memory Game")
@@ -77,17 +87,20 @@ public class FbPublishScoreActivity extends Activity {
 			@Override
 			public void onSuccess(Result result) {
 				Log.d(MemoryGame.LOGGING_KEY, "Success");
+				statusView.setText("Your score is posted on your fb wall.");
+				progressDialog.dismiss();
 			}
 
 			@Override
 			public void onError(FacebookException error) {
 				Log.e(MemoryGame.LOGGING_KEY, "", error);
-
+				progressDialog.dismiss();
 			}
 
 			@Override
-			public void onCancel() { 
+			public void onCancel() {
 				Log.d(MemoryGame.LOGGING_KEY, "Cancelled");
+				progressDialog.dismiss();
 			}
 		});
 
@@ -98,5 +111,5 @@ public class FbPublishScoreActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 		callbackManager.onActivityResult(requestCode, resultCode, data);
 	}
-	
+
 }
