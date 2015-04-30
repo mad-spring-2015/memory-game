@@ -13,12 +13,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.parse.FindCallback;
@@ -33,54 +36,69 @@ import com.parse.SignUpCallback;
 public class LoginActivity extends Activity {
 
 	private CallbackManager callbackManager;
-
+	private TextView loginStatusView ;
+	private ProgressBar loginProgress;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		callbackManager = CallbackManager.Factory.create();
 		LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
+		loginStatusView = (TextView) findViewById(R.id.textViewLoginStatus);
+		loginProgress = (ProgressBar) findViewById(R.id.progressBarLoginStatus);
 		loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+			private ProfileTracker mProfileTracker;
 
 			@Override
 			public void onSuccess(LoginResult result) {
-				Profile.fetchProfileForCurrentAccessToken();
-				ParseQuery<ParseUser> userQuery = ParseUser.getQuery();
-				userQuery.whereEqualTo("username", Profile.getCurrentProfile().getId());
-				userQuery.findInBackground(new FindCallback<ParseUser>() {
-
+				loginStatusView.setText("Initializing..");
+				loginProgress.setVisibility(View.VISIBLE);
+				mProfileTracker = new ProfileTracker() {
 					@Override
-					public void done(List<ParseUser> objects, ParseException e) {
-						if (e != null) {
-							Log.e(MemoryGame.LOGGING_KEY, "error in fetching user", e);
-						}
-						if (objects.size() == 0) {
-							// need to add this user to parse
-							final ParseUser user = new ParseUser();
-							user.setUsername(Profile.getCurrentProfile().getId());
-							user.setPassword(Profile.getCurrentProfile().getId());
-							user.put("firstName", Profile.getCurrentProfile().getFirstName());
-							user.put("lastName", Profile.getCurrentProfile().getLastName());
-							user.put("score", 0);
-							user.put("level", 1);
-							user.signUpInBackground(new SignUpCallback() {
+					protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
+						Log.d(MemoryGame.LOGGING_KEY, profile2.getFirstName());
+						mProfileTracker.stopTracking();
+						Profile.fetchProfileForCurrentAccessToken();
+						ParseQuery<ParseUser> userQuery = ParseUser.getQuery();
+						userQuery.whereEqualTo("username", Profile.getCurrentProfile().getId());
+						userQuery.findInBackground(new FindCallback<ParseUser>() {
 
-								@Override
-								public void done(ParseException e) {
-									if (e != null) {
-										Log.e(MemoryGame.LOGGING_KEY, "Problem creating Parse", e);
-										return;
-									}
-									postLogin(ParseUser.getCurrentUser());
+							@Override
+							public void done(List<ParseUser> objects, ParseException e) {
+								if (e != null) {
+									Log.e(MemoryGame.LOGGING_KEY, "error in fetching user", e);
 								}
-							});
-						} else {
-							logUserIn(objects.get(0).getUsername(), objects.get(0).getUsername());
-						}
+								if (objects.size() == 0) {
+									// need to add this user to parse
+									final ParseUser user = new ParseUser();
+									user.setUsername(Profile.getCurrentProfile().getId());
+									user.setPassword(Profile.getCurrentProfile().getId());
+									user.put("firstName", Profile.getCurrentProfile().getFirstName());
+									user.put("lastName", Profile.getCurrentProfile().getLastName());
+									user.put("score", 0);
+									user.put("level", 1);
+									user.signUpInBackground(new SignUpCallback() {
+
+										@Override
+										public void done(ParseException e) {
+											if (e != null) {
+												Log.e(MemoryGame.LOGGING_KEY, "Problem creating Parse", e);
+												return;
+											}
+											postLogin(ParseUser.getCurrentUser());
+										}
+									});
+								} else {
+									logUserIn(objects.get(0).getUsername(), objects.get(0).getUsername());
+								}
+							}
+						});
 					}
-				});
+				};
+				mProfileTracker.startTracking();
+
 			}
-			
+
 			@Override
 			public void onError(FacebookException error) {
 				Log.d(MemoryGame.LOGGING_KEY, "Error", error);
