@@ -66,5 +66,10 @@
     <string name="meTxt">Me</string>
     <string name="menu_item_one_on_one_txt">1-on-1</string>
     <string name="title_activity_splash_fragment">SplashFragment</string>
+    <string name="facebook_app_id">442063385971787</string>
+    <string name="or">OR</string>
+    <string name="parse_field_user_firstname">firstName</string>
+    <string name="menu_item_announce_on_fb_txt">Publish Score on Fb</string>
+    <string name="title_activity_fb_publish_score">Publish Score on fb</string>
 
 </resources>

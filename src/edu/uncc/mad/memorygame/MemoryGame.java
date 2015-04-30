@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
 import com.parse.ParseUser;
 
 public class MemoryGame extends Activity {
@@ -37,6 +39,9 @@ public class MemoryGame extends Activity {
 		switch (id) {
 		case R.id.menu_item_logout:
 			ParseUser.logOut();
+			if(AccessToken.getCurrentAccessToken() != null){
+				LoginManager.getInstance().logOut();
+			}
 			Intent signInIntent = new Intent(this, LoginActivity.class);
 			startActivity(signInIntent);
 			finish();
@@ -45,9 +50,9 @@ public class MemoryGame extends Activity {
 			Intent leaderboardIntent = new Intent(this, LeaderboardActivity.class);
 			startActivity(leaderboardIntent);
 			break;
-		case R.id.menu_item_standing:
-			Intent standingsIntent = new Intent(this, StandingsActivity.class);
-			startActivity(standingsIntent);
+		case R.id.menu_item_announce_on_fb:
+			Intent fbIntent = new Intent(this, FbPublishScoreActivity.class);
+			startActivity(fbIntent);
 			break;
 		case R.id.menu_item_one_on_one:
 			Intent oneOnOneIntent = new Intent(this, SelectPlayerActivity.class);

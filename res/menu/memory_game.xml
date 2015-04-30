@@ -19,5 +19,9 @@
         android:id="@+id/menu_item_one_on_one"
         android:title="@string/menu_item_one_on_one_txt">
     </item>
+    <item
+        android:id="@+id/menu_item_announce_on_fb"
+        android:title="@string/menu_item_announce_on_fb_txt">
+    </item>
 
 </menu>

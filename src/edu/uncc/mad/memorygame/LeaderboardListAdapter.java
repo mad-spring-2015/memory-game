@@ -32,7 +32,6 @@ public class LeaderboardListAdapter extends ArrayAdapter<ParseUser> {
 		}
 		ParseUser user = users.get(position);
 		((TextView)convertView.findViewById(R.id.textViewLbUserFnameLname)).setText(user.getString("firstName") + " " + user.getString("lastName"));
-		((TextView)convertView.findViewById(R.id.textViewLbUsername)).setText(user.getUsername());
 		((TextView)convertView.findViewById(R.id.textViewLbScore)).setText(user.getInt("score") + "");
 		((TextView)convertView.findViewById(R.id.textViewLbLevel)).setText("Level : " + user.getInt("level"));
 		return convertView;

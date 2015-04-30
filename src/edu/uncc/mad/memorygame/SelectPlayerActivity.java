@@ -5,7 +5,6 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -24,8 +23,6 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SendCallback;
 
-import edu.uncc.mad.memorygame.oneonone.OneOnOneActivity;
-import edu.uncc.mad.memorygame.oneonone.OneOnOneGameStatus;
 import edu.uncc.mad.memorygame.oneonone.WaitForOpponentAcceptTask;
 
 public class SelectPlayerActivity extends Activity {
@@ -91,7 +88,7 @@ public class SelectPlayerActivity extends Activity {
 		parsePush.setQuery(pQuery);
 		JSONObject data = new JSONObject();
 		try {
-			String me = ParseUser.getCurrentUser().getUsername();
+			String me = ParseUser.getCurrentUser().getString(getString(R.string.parse_field_user_firstname));
 			data.put("alert", me + " is challenging you");
 			data.put("username", me);
 			data.put("gameInstanceId", objectId);

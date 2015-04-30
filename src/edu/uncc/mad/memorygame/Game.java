@@ -276,7 +276,7 @@ public class Game {
 	}
 
 	public void pauseGame() {
-		if (timer.isRunning()) {
+		if (timer != null && timer.isRunning()) {
 			this.timerPausedState = timer.pause();
 		}
 	}

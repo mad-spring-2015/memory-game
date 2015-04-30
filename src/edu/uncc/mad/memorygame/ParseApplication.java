@@ -8,6 +8,7 @@ package edu.uncc.mad.memorygame;
 import android.app.Application;
 import android.util.Log;
 
+import com.facebook.FacebookSdk;
 import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseException;
@@ -28,7 +29,6 @@ public class ParseApplication extends Application {
 
 		// Add your initialization code here
 		Parse.initialize(this, "lahvjzArnTbevwRyKc34GHo6PnzSEu5xM0Z9zxVt", "OvCSe0djd6Y2mEyHB6JzhlXgOOgOcde2IZzmS5CB");
-
 		// ParseUser.enableAutomaticUser();
 		ParseACL defaultACL = new ParseACL();
 		// Optionally enable public read access.
@@ -36,6 +36,7 @@ public class ParseApplication extends Application {
 		// ParseUser.getCurrentUser().saveInBackground();
 		ParseACL.setDefaultACL(defaultACL, true);
 
+		FacebookSdk.sdkInitialize(this);
 		ParsePush.subscribeInBackground("", new SaveCallback() {
 			@Override
 			public void done(ParseException e) {
