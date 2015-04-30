@@ -9,7 +9,7 @@
     tools:context="edu.uncc.mad.memorygame.SplashFragment$PlaceholderFragment" >
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/imageViewStatus"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/memorygame" />

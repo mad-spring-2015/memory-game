@@ -71,5 +71,6 @@
     <string name="parse_field_user_firstname">firstName</string>
     <string name="menu_item_announce_on_fb_txt">Publish Score on Fb</string>
     <string name="title_activity_fb_publish_score">Publish Score on fb</string>
+    <string name="memoryGameTitleTxt">Memory Game</string>
 
 </resources>

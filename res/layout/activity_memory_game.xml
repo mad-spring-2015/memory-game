@@ -15,21 +15,20 @@
 
         <TextView
             android:id="@+id/textViewLevel"
+            style="@style/MemoryGame.LargeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:layout_centerVertical="true" />
 
         <TextView
             android:id="@+id/textViewScore"
+           style="@style/MemoryGame.LargeText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-
+            android:layout_centerVertical="true" />
     </RelativeLayout>
 
     <GridView
@@ -42,16 +41,15 @@
         android:horizontalSpacing="@dimen/grid_h_spacing"
         android:numColumns="3"
         android:verticalSpacing="@dimen/grid_v_spacing" >
-
     </GridView>
 
     <TextView
         android:id="@+id/textViewTimeRem"
+        style="@style/MemoryGame.LargeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/gridViewGame"
         android:layout_centerHorizontal="true"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         android:visibility="invisible" />
 
     <Button

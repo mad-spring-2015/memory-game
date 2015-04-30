@@ -8,18 +8,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.uncc.mad.memorygame.LoginActivity" >
 
-    <EditText
-        android:id="@+id/editTextEmail"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:ems="10"
-        android:hint="@string/email" android:inputType="textEmailAddress">
-
-        <requestFocus />
-    </EditText>
+        android:src="@drawable/title" />
 
     <EditText
         android:id="@+id/editTextPassword"
@@ -69,5 +63,16 @@
         android:text="@string/or"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/editTextEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editTextPassword"
+        android:layout_below="@+id/imageView1"
+        android:layout_marginTop="21dp"
+        android:ems="10"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress" />
 
 </RelativeLayout>
