@@ -11,7 +11,9 @@ import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.graphics.Color;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -70,7 +72,7 @@ public class Game {
 			@Override
 			public void done(List<ParseObject> levels, ParseException e) {
 				if (levels != null) {
-					if(levels.size() == 0 ){
+					if (levels.size() == 0) {
 						Toast.makeText(activity, "No more levels", Toast.LENGTH_LONG).show();
 						activity.findViewById(R.id.buttonPlay).setEnabled(false);
 						return;
@@ -103,7 +105,7 @@ public class Game {
 	public void draw() {
 		((TextView) activity.findViewById(R.id.textViewLevel)).setText("Level : " + getLevelNo());
 		((TextView) activity.findViewById(R.id.textViewScore)).setText("Score : " + getScore());
-		GridView gv = (GridView) activity.findViewById(R.id.gridViewGame);
+		final GridView gv = (GridView) activity.findViewById(R.id.gridViewGame);
 		gv.setNumColumns((int) Math.sqrt(this.noOfComponents));
 		for (int i = 0; i < this.noOfComponents; i++) {
 			this.components.add(new Circle(activity, getRandomColor()));
@@ -113,19 +115,37 @@ public class Game {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				if (!patternClickEnabled) {
-					return;
+				onComponentClicked(position);
+			}
+
+		});
+		gv.setOnTouchListener(new OnTouchListener() {
+
+			public boolean onTouch(View v, MotionEvent me) {
+
+				int action = me.getActionMasked(); // MotionEvent types such as
+													// ACTION_UP, ACTION_DOWN
+
+				if (action == MotionEvent.ACTION_UP) {
+					int position = getPosition(gv, me);
+					components.get(getPosition(gv, me)).setTransparency(Circle.DEFAULT_ALPHA);
+					onComponentClicked(position);
+				} else if (action == MotionEvent.ACTION_DOWN) {
+					int position = getPosition(gv, me);
+					components.get(position).setTransparency(255);
 				}
-				boolean resume = recordPattern(position);
-				if (!resume) {
-					timer.endTimer();
-					if (playerPattern.toString().equals(ordering)) {
-						// you are good. got to next level
-						gotoNextLevel();
-					} else {
-						restartLevel();
-					}
-				}
+				v.performClick();
+				return true;
+			}
+
+			/**
+			 * @param gv
+			 * @param me
+			 */
+			private int getPosition(final GridView gv, MotionEvent me) {
+				float currentXPosition = me.getX();
+				float currentYPosition = me.getY();
+				return gv.pointToPosition((int) currentXPosition, (int) currentYPosition);
 			}
 		});
 	}
@@ -293,5 +313,25 @@ public class Game {
 		Button btn = (Button) activity.findViewById(R.id.buttonRestart);
 		btn.setText(getString(R.string.btn_txt_retry));
 		btn.setVisibility(View.VISIBLE);
+	}
+
+	/**
+	 * @param position
+	 */
+	private void onComponentClicked(int position) {
+		Log.d(MemoryGame.LOGGING_KEY, "onitemclick");
+		if (!patternClickEnabled) {
+			return;
+		}
+		boolean resume = recordPattern(position);
+		if (!resume) {
+			timer.endTimer();
+			if (playerPattern.toString().equals(ordering)) {
+				// you are good. got to next level
+				gotoNextLevel();
+			} else {
+				restartLevel();
+			}
+		}
 	}
 }

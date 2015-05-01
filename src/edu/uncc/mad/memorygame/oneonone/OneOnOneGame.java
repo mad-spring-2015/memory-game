@@ -13,7 +13,9 @@ import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -23,7 +25,6 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.SaveCallback;
 
 import edu.uncc.mad.memorygame.CircleAdapter;
 import edu.uncc.mad.memorygame.MemoryGame;
@@ -141,7 +142,7 @@ public class OneOnOneGame {
 
 	private void draw(ParseObject level) {
 		((TextView) activity.findViewById(R.id.textViewMeScore)).setText("" + score);
-		GridView gv = (GridView) activity.findViewById(R.id.gridView1on1);
+		final GridView gv = (GridView) activity.findViewById(R.id.gridView1on1);
 		int noOfComponents = level.getInt(getString(R.string.parse_field_1on1_level_noOfComp));
 		gv.setNumColumns((int) Math.sqrt(noOfComponents));
 		components = new ArrayList<Circle>();
@@ -153,18 +154,36 @@ public class OneOnOneGame {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				if (!patternClickEnabled) {
-					return;
+				onComponentClicked(position);
+			}
+		});
+		gv.setOnTouchListener(new OnTouchListener() {
+
+			public boolean onTouch(View v, MotionEvent me) {
+
+				int action = me.getActionMasked(); // MotionEvent types such as
+													// ACTION_UP, ACTION_DOWN
+
+				if (action == MotionEvent.ACTION_UP) {
+					int position = getPosition(gv, me);
+					components.get(getPosition(gv, me)).setTransparency(Circle.DEFAULT_ALPHA);
+					onComponentClicked(position);
+				} else if (action == MotionEvent.ACTION_DOWN) {
+					int position = getPosition(gv, me);
+					components.get(position).setTransparency(255);
 				}
-				boolean resume = recordPattern(position);
-				if (!resume) {
-					levelEndTime = new Date();
-					if (playerPattern.toString().equals(currentLevelOrdering)) {
-						gotoNextLevel();
-					} else {
-						levelFail();
-					}
-				}
+				v.performClick();
+				return true;
+			}
+
+			/**
+			 * @param gv
+			 * @param me
+			 */
+			private int getPosition(final GridView gv, MotionEvent me) {
+				float currentXPosition = me.getX();
+				float currentYPosition = me.getY();
+				return gv.pointToPosition((int) currentXPosition, (int) currentYPosition);
 			}
 		});
 	}
@@ -321,5 +340,23 @@ public class OneOnOneGame {
 
 	public TextView getOpScoreView() {
 		return opScoreView;
+	}
+
+	/**
+	 * @param position
+	 */
+	private void onComponentClicked(int position) {
+		if (!patternClickEnabled) {
+			return;
+		}
+		boolean resume = recordPattern(position);
+		if (!resume) {
+			levelEndTime = new Date();
+			if (playerPattern.toString().equals(currentLevelOrdering)) {
+				gotoNextLevel();
+			} else {
+				levelFail();
+			}
+		}
 	}
 }
