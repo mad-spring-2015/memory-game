@@ -36,12 +36,18 @@ import com.parse.SignUpCallback;
 public class LoginActivity extends Activity {
 
 	private CallbackManager callbackManager;
-	private TextView loginStatusView ;
+	private TextView loginStatusView;
 	private ProgressBar loginProgress;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		if (ParseUser.getCurrentUser() != null) {
+			Intent intent = new Intent(LoginActivity.this, MemoryGame.class);
+			startActivity(intent);
+			finish();
+		}
 		callbackManager = CallbackManager.Factory.create();
 		LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
 		loginStatusView = (TextView) findViewById(R.id.textViewLoginStatus);
@@ -53,49 +59,32 @@ public class LoginActivity extends Activity {
 			public void onSuccess(LoginResult result) {
 				loginStatusView.setText("Initializing..");
 				loginProgress.setVisibility(View.VISIBLE);
-				mProfileTracker = new ProfileTracker() {
-					@Override
-					protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
-						Log.d(MemoryGame.LOGGING_KEY, profile2.getFirstName());
-						mProfileTracker.stopTracking();
-						Profile.fetchProfileForCurrentAccessToken();
-						ParseQuery<ParseUser> userQuery = ParseUser.getQuery();
-						userQuery.whereEqualTo("username", Profile.getCurrentProfile().getId());
-						userQuery.findInBackground(new FindCallback<ParseUser>() {
-
-							@Override
-							public void done(List<ParseUser> objects, ParseException e) {
-								if (e != null) {
-									Log.e(MemoryGame.LOGGING_KEY, "error in fetching user", e);
-								}
-								if (objects.size() == 0) {
-									// need to add this user to parse
-									final ParseUser user = new ParseUser();
-									user.setUsername(Profile.getCurrentProfile().getId());
-									user.setPassword(Profile.getCurrentProfile().getId());
-									user.put("firstName", Profile.getCurrentProfile().getFirstName());
-									user.put("lastName", Profile.getCurrentProfile().getLastName());
-									user.put("score", 0);
-									user.put("level", 1);
-									user.signUpInBackground(new SignUpCallback() {
-
-										@Override
-										public void done(ParseException e) {
-											if (e != null) {
-												Log.e(MemoryGame.LOGGING_KEY, "Problem creating Parse", e);
-												return;
-											}
-											postLogin(ParseUser.getCurrentUser());
-										}
-									});
-								} else {
-									logUserIn(objects.get(0).getUsername(), objects.get(0).getUsername());
-								}
+				Profile.fetchProfileForCurrentAccessToken();
+				Log.d(MemoryGame.LOGGING_KEY, "CurentProfile" + Profile.getCurrentProfile() == null ? "null" : Profile
+						.getCurrentProfile().toString());
+				if (Profile.getCurrentProfile() != null) {
+					profileReceived(Profile.getCurrentProfile());
+				} else {
+					mProfileTracker = new ProfileTracker() {
+						@Override
+						protected void onCurrentProfileChanged(Profile profile, final Profile profile2) {
+							mProfileTracker.stopTracking();
+							Log.d(MemoryGame.LOGGING_KEY, "Profile change detected");
+							// this is a logout
+							if (profile2 == null) {
+								return;
 							}
-						});
-					}
-				};
-				mProfileTracker.startTracking();
+							if (profile2 == profile) {
+								Log.w(MemoryGame.LOGGING_KEY, "An inconcistent profile state");
+								return;
+							}
+							Log.d(MemoryGame.LOGGING_KEY, profile2.getFirstName());
+
+							profileReceived(profile2);
+						}
+					};
+					mProfileTracker.startTracking();
+				}
 
 			}
 
@@ -112,12 +101,6 @@ public class LoginActivity extends Activity {
 		});
 		// AccessToken.getCurrentAccessToken().
 		// getActionBar().setTitle("Login");
-		if (ParseUser.getCurrentUser() != null) {
-			Intent intent = new Intent(LoginActivity.this, MemoryGame.class);
-			startActivity(intent);
-			finish();
-		}
-
 	}
 
 	@Override
@@ -181,9 +164,53 @@ public class LoginActivity extends Activity {
 
 			}
 		});
-
+		loginStatusView.setText("");
+		loginProgress.setVisibility(View.INVISIBLE);
 		Intent intent = new Intent(LoginActivity.this, MemoryGame.class);
 		startActivity(intent);
 		finish();
+	}
+
+	/**
+	 * Invoked after facebook profile is received
+	 * 
+	 * @param profile
+	 */
+	private void profileReceived(final Profile profile) {
+		ParseQuery<ParseUser> userQuery = ParseUser.getQuery();
+		userQuery.whereEqualTo("username", profile.getId());
+		userQuery.findInBackground(new FindCallback<ParseUser>() {
+
+			@Override
+			public void done(List<ParseUser> objects, ParseException e) {
+				if (e != null) {
+					Log.e(MemoryGame.LOGGING_KEY, "error in fetching user", e);
+					return;
+				}
+				if (objects.size() == 0) {
+					// need to add this user to parse
+					final ParseUser user = new ParseUser();
+					user.setUsername(profile.getId());
+					user.setPassword(profile.getId());
+					user.put("firstName", profile.getFirstName());
+					user.put("lastName", profile.getLastName());
+					user.put("score", 0);
+					user.put("level", 1);
+					user.signUpInBackground(new SignUpCallback() {
+
+						@Override
+						public void done(ParseException e) {
+							if (e != null) {
+								Log.e(MemoryGame.LOGGING_KEY, "Problem creating Parse", e);
+								return;
+							}
+							postLogin(ParseUser.getCurrentUser());
+						}
+					});
+				} else {
+					logUserIn(objects.get(0).getUsername(), objects.get(0).getUsername());
+				}
+			}
+		});
 	}
 }

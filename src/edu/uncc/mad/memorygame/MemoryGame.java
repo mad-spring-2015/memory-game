@@ -3,6 +3,7 @@ package edu.uncc.mad.memorygame;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +22,7 @@ public class MemoryGame extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_memory_game);
-		//TODO add margin for single game
+		// TODO add margin for single game
 		game = new Game(this);
 		game.init();
 	}
@@ -39,8 +40,10 @@ public class MemoryGame extends Activity {
 		switch (id) {
 		case R.id.menu_item_logout:
 			ParseUser.logOut();
-			if(AccessToken.getCurrentAccessToken() != null){
+			if (AccessToken.getCurrentAccessToken() != null) {
 				LoginManager.getInstance().logOut();
+			} else {
+				Log.w(MemoryGame.LOGGING_KEY, "null accesstoken detected");
 			}
 			Intent signInIntent = new Intent(this, LoginActivity.class);
 			startActivity(signInIntent);

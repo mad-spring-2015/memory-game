@@ -13,7 +13,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/title" />
+        android:src="@drawable/title2" />
+
+    <EditText
+        android:id="@+id/editTextEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imageView1"
+        android:layout_marginTop="21dp"
+        android:ems="10"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress" >
+
+        <requestFocus />
+    </EditText>
 
     <EditText
         android:id="@+id/editTextPassword"
@@ -54,9 +67,9 @@
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/buttonCreateNewAccount"
+        android:layout_below="@+id/textViewOrTxt"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="78dp" />
+        android:layout_marginTop="20dp" />
 
     <TextView
         android:id="@+id/textViewOrTxt"
@@ -64,28 +77,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/buttonCreateNewAccount"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="15dp"
         android:text="@string/or"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textStyle="bold" />
-
-    <EditText
-        android:id="@+id/editTextEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editTextPassword"
-        android:layout_below="@+id/imageView1"
-        android:layout_marginTop="21dp"
-        android:ems="10"
-        android:hint="@string/email"
-        android:inputType="textEmailAddress" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/login_button"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="70dp" >
+        android:layout_marginTop="22dp" >
 
         <ProgressBar
             android:id="@+id/progressBarLoginStatus"
@@ -99,7 +101,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall" />
-
     </LinearLayout>
 
 </RelativeLayout>
