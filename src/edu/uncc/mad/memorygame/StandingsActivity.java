@@ -25,6 +25,7 @@ public class StandingsActivity extends Activity {
 	private ParseUser currentUser;
 	private Standings1on1ListAdapter adapter;
 	private List<ParseObject> results;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,12 +35,14 @@ public class StandingsActivity extends Activity {
 		adapter = new Standings1on1ListAdapter(this, R.layout.standings_list_item, results);
 		ListView lv = (ListView) findViewById(R.id.listViewSt1on1);
 		lv.setAdapter(adapter);
-		
-		((TextView) findViewById(R.id.textViewStFName)).setText(currentUser.getString(
-				getString(R.string.parse_field_user_firstname)));
+
+		((TextView) findViewById(R.id.textViewStFName)).setText(currentUser
+				.getString(getString(R.string.parse_field_user_firstname)));
 		((TextView) findViewById(R.id.textViewStLName)).setText(currentUser.getString("lastName"));
-		((TextView) findViewById(R.id.textViewStLevel)).setText("Level : " + currentUser.getInt(getString(R.string.parse_field_user_level)));
-		((TextView) findViewById(R.id.textViewStScore)).setText("" + currentUser.getInt(getString(R.string.parse_field_user_score)));
+		((TextView) findViewById(R.id.textViewStLevel)).setText("Level : "
+				+ currentUser.getInt(getString(R.string.parse_field_user_level)));
+		((TextView) findViewById(R.id.textViewStScore)).setText(""
+				+ currentUser.getInt(getString(R.string.parse_field_user_score)));
 		stTextViewStatus = (TextView) findViewById(R.id.textViewStStatus);
 		stProgressBarStatus = (ProgressBar) findViewById(R.id.progressBarStStatus);
 		stTextViewStatus.setText("Fetching..");
@@ -48,15 +51,15 @@ public class StandingsActivity extends Activity {
 		oneOnOneQueryA.whereEqualTo("userA", currentUser);
 		ParseQuery<ParseObject> oneOnOneQueryB = ParseQuery.getQuery(getString(R.string.parse_class_1on1_game));
 		oneOnOneQueryB.whereEqualTo("userB", currentUser);
-		List<ParseQuery<ParseObject>> queries =  Arrays.asList(oneOnOneQueryA, oneOnOneQueryB);
+		List<ParseQuery<ParseObject>> queries = Arrays.asList(oneOnOneQueryA, oneOnOneQueryB);
 		ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);
 		mainQuery.orderByDescending("updatedAt");
 		mainQuery.setLimit(5);
 		mainQuery.findInBackground(new FindCallback<ParseObject>() {
-			
+
 			@Override
 			public void done(List<ParseObject> results, ParseException e) {
-				if(e != null){
+				if (e != null) {
 					Log.e(MemoryGame.LOGGING_KEY, "error in fetching", e);
 					stProgressBarStatus.setVisibility(View.INVISIBLE);
 					stTextViewStatus.setText(e.getMessage());
@@ -64,10 +67,14 @@ public class StandingsActivity extends Activity {
 				}
 				stProgressBarStatus.setVisibility(View.INVISIBLE);
 				stTextViewStatus.setText("");
-				StandingsActivity.this.results.addAll(results);
-				adapter.notifyDataSetChanged();
+				if (results.size() == 0) {
+					stTextViewStatus.setText("You don't seem to have played any 1 on 1's");
+				} else {
+					StandingsActivity.this.results.addAll(results);
+					adapter.notifyDataSetChanged();
+				}
 			}
 		});
-		
+
 	}
 }
