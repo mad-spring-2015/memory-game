@@ -55,6 +55,7 @@ public class StandingsActivity extends Activity {
 		ParseQuery<ParseObject> mainQuery = ParseQuery.or(queries);
 		mainQuery.orderByDescending("updatedAt");
 		mainQuery.setLimit(5);
+		mainQuery.include("userA").include("userB");
 		mainQuery.findInBackground(new FindCallback<ParseObject>() {
 
 			@Override

@@ -82,7 +82,11 @@ public class OneOnOneActivity extends Activity {
 
 	@Override
 	protected void onDestroy() {
-		// TODO Auto-generated method stub
+		if (game != null && game.isPlaying()) {
+			if (gameInstance != null) {
+				game.gameForfeit();
+			}
+		}
 		super.onDestroy();
 	}
 }
