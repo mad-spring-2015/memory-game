@@ -84,5 +84,7 @@
     <string name="menu_item_announce_on_fb_txt">Publish Score on Fb</string>
     <string name="title_activity_fb_publish_score">Publish Score on fb</string>
     <string name="memoryGameTitleTxt">Memory Game</string>
+    <string name="oneOnOneText">LAST 5 1-ON-1s</string>
+    <string name="vsTxt">vs</string>
 
 </resources>

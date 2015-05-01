@@ -3,4 +3,5 @@
     <color name="MemoryGame.color1">#43A047</color>
     <color name="MemoryGame.lighter">#C8E6C9</color>
     <color name="MemoryGame.accent">#00C853</color>
+    <color name="MemoryGame.secondaryText">#808080</color>
 </resources>
