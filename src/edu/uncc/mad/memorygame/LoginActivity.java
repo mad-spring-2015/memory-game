@@ -60,8 +60,8 @@ public class LoginActivity extends Activity {
 				loginStatusView.setText("Initializing..");
 				loginProgress.setVisibility(View.VISIBLE);
 				Profile.fetchProfileForCurrentAccessToken();
-				Log.d(MemoryGame.LOGGING_KEY, "CurentProfile" + Profile.getCurrentProfile() == null ? "null" : Profile
-						.getCurrentProfile().toString());
+			/*	Log.d(MemoryGame.LOGGING_KEY, "CurentProfile" + Profile.getCurrentProfile() == null ? "null" : Profile
+						.getCurrentProfile().toString());*/
 				if (Profile.getCurrentProfile() != null) {
 					profileReceived(Profile.getCurrentProfile());
 				} else {

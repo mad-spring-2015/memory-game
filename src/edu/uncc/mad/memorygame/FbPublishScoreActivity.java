@@ -37,6 +37,7 @@ public class FbPublishScoreActivity extends Activity {
 		callbackManager = CallbackManager.Factory.create();
 		statusView = (TextView) findViewById(R.id.textViewFbPostStatus);
 		imgStatus = (ImageView) findViewById(R.id.imageViewStatus);
+		Log.d(MemoryGame.LOGGING_KEY, "starting fbpub activity");
 		if (AccessToken.getCurrentAccessToken() == null) {
 			statusView.setText("You have to be logged in as facebook user to user this feature.");
 			return;
